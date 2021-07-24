@@ -29,8 +29,8 @@
               <li class="nav-item active">
                   <router-link class="nav-link" to="/contact"> Liên Hệ </router-link>
               </li>             
-              <li class="button-group">
-                  <router-link class="button btn btn-common" to="#"> Nhà Tuyển Dụng </router-link>
+              <li>
+                  <router-link  class="button btn btn-common" to="/recruiter"> Nhà Tuyển Dụng </router-link>
               </li>
               <li v-if="isLogin" class="nav-item active">
                 <router-link class="nav-link" to="/student-login">Đăng nhập</router-link>
@@ -59,11 +59,12 @@
 export default {
     data() {
     return {
+      changeButton: false,
       isLogin: true,
       user:
           {
               username: "ThangPV"
-          }
+          },
     };
   },
   components: {
