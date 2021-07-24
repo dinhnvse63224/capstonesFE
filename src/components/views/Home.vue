@@ -451,6 +451,7 @@ body {
 }
 
 .carousel-item img {
-    height: 400px
+    height: 400px;
+    padding: 39px;
 }
 </style>

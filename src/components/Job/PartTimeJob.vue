@@ -1,23 +1,17 @@
 <template>
-  <div v-if="job.type == false" class="col-lg-6 col-md-12 col-xs-12">
-    <div class="parttime">
-      <div class="img-thumb">
-        <img v-bind:src="job.image" />
-      </div>
-      <div class="content">
-        <h3>
-          <router-link to="/job-detail">{{ job.name }}</router-link>
-        </h3>
-        <p class="brand">{{ job.brand }}</p>
-        <p class="major" hidden>{{ job.major }}</p>
-        <div class="tags">
-          <i class="lni-map-marker"></i> {{ job.location }}
-        </div>
-        <div class="tag mb-3"><i class="lni-tag"></i> {{ job.required }}</div>
-        <span class="part-time"> Part time</span>
-      </div>
-    </div>
-  </div>
+  <div class="col-sm-6 col-lg-4 m-15px-tb">
+                <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px">
+                    <a class="overlay-link" href="#"></a>
+                     <img v-bind:src="job.image" />
+                       
+                    </div>
+                    <div class="p-20px-l media-body">
+                        <span class="theme2nd-bg white-color p-0px-tb p-10px-lr font-small border-radius-15">Full time</span>
+                        <h6 class="m-5px-tb"> <router-link to="/job-detail">{{ job.name }}</router-link> </h6>
+                        <p class="m-0px font-small"> <i class="lni-map-marker"></i> {{ job.location }}</p>
+                    </div>
+                
+            </div>
 </template>
 
 <script>
@@ -32,77 +26,207 @@ export default {
 </script>
 
 <style scoped>
-#latest-jobs .parttime {
-  background: #fff;
-  margin: 15px 0;
-  border-radius: 4px;
-  display: inline-block;
-  width: 100%;
-  position: relative;
-  box-shadow: 0px 0px 14px rgba(191, 191, 191, 0.24);
-  transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -webkit-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
+body{margin-top:20px;}
+.p-15px {
+    padding: 15px;
 }
 
-#latest-jobs .parttime .img-thumb {
-  position: relative;
-  display: block;
-  text-align: center;
-  line-height: 160px;
-  height: 20%;
-  border-right: 1px solid #f1f1f1;
-  padding: 5px;
-  width: 100%;
+.hover-top {
+    position: relative;
+    top: 0;
+}
+.m-15px-tb {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.overlay-link {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 0;
+}
+.border-radius-50 {
+    border-radius: 50%;
+}
+.icon-50 {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 21px;
+}
+.white-color {
+    color: #ffffff;
+}
+.theme-bg {
+    background-color: #0050d8;
+}
+.icon-50 i.number {
+    font-style: normal;
+}
+.icon-50 i {
+    line-height: 50px;
+}
+.p-20px-l {
+    padding-left: 20px;
+}
+.p-10px-lr {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.p-0px-tb {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.border-radius-15 {
+    border-radius: 15px;
+}
+.white-color {
+    color: #ffffff;
+}
+.theme2nd-bg {
+    background-color: #53d267;
+}
+.m-0px {
+    margin: 0px;
+}
+.font-small {
+    font-size: .75rem;
+    line-height: 1rem;
 }
 
-#latest-jobs .parttime .content {
-  padding: 20px;
-  width: 100%;
+.green-bg-alt {
+  background-color: rgba(17, 226, 121, 0.1);
 }
 
-#latest-jobs .parttime .content h3 {
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 5px;
+.green-bg {
+  background-color: #11e279;
 }
 
-#latest-jobs .parttime .content h3 a {
-  color: black;
+.green-after:after {
+  background-color: #11e279;
 }
 
-#latest-jobs .parttime .content h3 a:hover {
-  color: #00BCD4;
+.green-before:before {
+  background-color: #11e279;
 }
 
-#latest-jobs .parttime .content .tags span {
-  margin-right: 10px;
-  line-height: 30px;
+.green-color-alt {
+  color: rgba(17, 226, 121, 0.65);
 }
 
-#latest-jobs .parttime .content .tags span i {
-  margin-right: 5px;
-  color: #00BCD4;
+.green-color {
+  color: #11e279;
 }
 
-#latest-jobs .parttime .content .tag i {
-  color: #00BCD4;
+.blue-bg-alt {
+  background-color: rgba(21, 178, 236, 0.1);
 }
 
-#latest-jobs .parttime .content .job-type {
-  color: #00BCD4;
-  font-size: 13px;
-  font-weight: 500;
-  display: inline-block;
-  background: #d5ffe7;
-  padding: 5px 15px;
-  border-radius: 4px;
-  text-transform: uppercase;
+.blue-bg {
+  background-color: #15b2ec;
 }
 
-#latest-jobs .parttime .content .part-time {
-  background: #ffd8d2;
-  color: #ff6046;
+.blue-after:after {
+  background-color: #15b2ec;
+}
+
+.blue-before:before {
+  background-color: #15b2ec;
+}
+
+.blue-color-alt {
+  color: rgba(21, 178, 236, 0.65);
+}
+
+.blue-color {
+  color: #15b2ec;
+}
+
+.pink-bg-alt {
+  background-color: rgba(241, 38, 153, 0.1);
+}
+
+.pink-bg {
+  background-color: #f12699;
+}
+
+.pink-after:after {
+  background-color: #f12699;
+}
+
+.pink-before:before {
+  background-color: #f12699;
+}
+
+.pink-color-alt {
+  color: rgba(241, 38, 153, 0.65);
+}
+
+.pink-color {
+  color: #f12699;
+}
+
+.body-bg-alt {
+  background-color: rgba(113, 128, 150, 0.1);
+}
+
+.body-bg {
+  background-color: #718096;
+}
+
+.body-after:after {
+  background-color: #718096;
+}
+
+.body-before:before {
+  background-color: #718096;
+}
+
+.body-color-alt {
+  color: rgba(113, 128, 150, 0.65);
+}
+
+.body-color {
+  color: #718096;
+}
+
+.white-color-light {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.theme-g-bg {
+  background: linear-gradient(to right, #0050d8, #002a72);
+}
+
+.dark-g-bg {
+  background: linear-gradient(50deg, #273444 0, #272b44 100%);
+}
+.yellow-bg {
+    background-color: #ffbe3d;
+}
+.border-radius-50 {
+    border-radius: 50%;
+}
+.icon-50 {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 21px;
+}
+
+.box-shadow-only-hover:hover {
+  box-shadow: 0 1.5rem 4rem rgba(22, 28, 45, 0.1);
+}
+.border-color-gray {
+    border-color: #f2f3fa !important;
+}
+.border-all-1 {
+    border: 1px solid;
 }
 </style>

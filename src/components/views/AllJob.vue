@@ -82,7 +82,7 @@
         </div>
       </div>
     </header>
-    <section id="latest-jobs" class="section bg-gray">
+    <!-- <section id="latest-jobs" class="section bg-gray">
       <div class="container">
         <div class="row">
           <div class="col-lg-6 col-md-12 col-xs-12">
@@ -103,17 +103,36 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
+    <section class="section">
+    <div class="container">
+        <div class="row">
+            
+                    <ListPartTimeJob v-bind:listJob="listJob" />
+               
+             <!-- <div class="col-sm-6 col-lg-4 m-15px-tb">
+                <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px">
+                    <ListFullTimeJob v-bind:listJob="listJob" />
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 m-15px-tb">
+                <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px">
+                    <ListFullTimeJob v-bind:listJob="listJob" />
+                </div>
+            </div> -->
+             </div>
+              </div>
+</section>
   </div>
 </template>
 
 <script>
 import ListPartTimeJob from "../Job/ListPartTimeJob.vue"
-import ListFullTimeJob from "../Job/ListFullTimeJob.vue"
+// import ListFullTimeJob from "../Job/ListFullTimeJob.vue"
 export default {
   components: {
     ListPartTimeJob,
-    ListFullTimeJob,
+    // ListFullTimeJob,
   },
   data() {
     return {
@@ -489,5 +508,3 @@ export default {
 };
 </script>
 
-<style>
-</style>
