@@ -33,11 +33,8 @@
                     <input v-model="code" type="text" class="form-control" placeholder="Mã">
                   </div>
                 </div> 
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Duy trì đăng nhập</label>
-                </div>
-                <a href="profileStudent.html" class="btn btn-common log-btn">Đăng Nhập</a>
+                
+                <a href="profileStudent.html" class="btn btn-common log-btn">Gửi mã OPT</a>
                 <a href="#" class="btn btn-common log-btn" @click.prevent="loginWithGoogle">
                   Đăng nhập bằng
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">                   
@@ -51,9 +48,7 @@
                   Google
                 </a>     
               </form>
-              <ul class="form-links">
-                <li class="text-center"><a href="registerStudent.html">Bạn chưa có tài khoản?</a></li>
-              </ul>
+             
             </div>
           </div>
         </div>
