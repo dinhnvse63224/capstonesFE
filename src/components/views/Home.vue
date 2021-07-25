@@ -77,14 +77,14 @@
         <div class="section-header">
           <h2 class="section-title">VIỆC LÀM MỚI NHẤT</h2>
         </div>
-            <!-- <ListJob v-bind:listJob="listJob"/>  -->
+            <ListJob v-bind:listJob="listJob"/> 
             <!-- props data in ListJobs.vue -->
-            <div id="test">
+            <!-- <div id="test">
               <ul v-for="job in list" v-bind:key="job">
                 <li> {{job.name}} </li>  
               </ul>
               <button v-on:click="OpenListABC">Open</button>
-            </div>
+            </div> -->
       </div>
       
 
@@ -145,8 +145,8 @@
 </template>
 
 <script>
-// import ListJob from '../Job/ListJob.vue'
-import axios from 'axios';
+import ListJob from '../Job/ListJob.vue'
+// import axios from 'axios';
 
 export default {
   data() {
@@ -352,21 +352,21 @@ export default {
     };
   },
   components: {
-    // ListJob,
+    ListJob,
   },
-  methods: {
-    OpenListABC() {
-      console.log(this.list);
-    }
-  },
-  mounted () {
-    const tokenStr = 'ohJUB7WPrskOGyPeCrR-_TEnYdKdrYaBLvcNRTyDctLDxBDcwiR0MJvCWaEbkFKbYeg7hN4C-FbAH-gzIGARUdZggmcvrd95M4zEl5R9ggh-M_mBGOuAmC9yVWBopwSX9Qn8CZQAI-d41zosYAgjsIuQmp3MS2V7ugyaySy1O6WOqvGPhVHDGbABG6PhAFMHJU_yzb9PYJb_J4ne7R1sQzL2PwbEy6x_zmeglsbmGf4k-FBwv1FpWYidA6G8aGPhMqNBl_xM2BgYQFzoOPpyaj8eVZDgyy6gq5Npvrc-uUgcQ5buVvOlGCXxhHQosa89'
-    // axios.get('https://localhost:44315/job').then(response => (console.log(response)))
-    axios.get("https://localhost:44315/job", 
-    { headers: {"Authorization" : `Bearer ${tokenStr}`} }).then(response => {
-      (this.list = response.data.data);
-      console.log(response.data.data) })
-  }
+  // methods: {
+  //   OpenListABC() {
+  //     console.log(this.list);
+  //   }
+  // },
+  // mounted () {
+  //   const tokenStr = 'ohJUB7WPrskOGyPeCrR-_TEnYdKdrYaBLvcNRTyDctLDxBDcwiR0MJvCWaEbkFKbYeg7hN4C-FbAH-gzIGARUdZggmcvrd95M4zEl5R9ggh-M_mBGOuAmC9yVWBopwSX9Qn8CZQAI-d41zosYAgjsIuQmp3MS2V7ugyaySy1O6WOqvGPhVHDGbABG6PhAFMHJU_yzb9PYJb_J4ne7R1sQzL2PwbEy6x_zmeglsbmGf4k-FBwv1FpWYidA6G8aGPhMqNBl_xM2BgYQFzoOPpyaj8eVZDgyy6gq5Npvrc-uUgcQ5buVvOlGCXxhHQosa89'
+  //   // axios.get('https://localhost:44315/job').then(response => (console.log(response)))
+  //   axios.get("https://localhost:44315/job", 
+  //   { headers: {"Authorization" : `Bearer ${tokenStr}`} }).then(response => {
+  //     (this.list = response.data.data);
+  //     console.log(response.data.data) })
+  // }
 };
 </script>
 
@@ -451,7 +451,6 @@ body {
 }
 
 .carousel-item img {
-    height: 400px;
-    padding: 39px;
+    height: 400px
 }
 </style>
