@@ -109,7 +109,8 @@
         <div class="row">
             
                     <ListPartTimeJob v-bind:listJob="listJob" />
-               
+                    <h1>Parttime</h1>
+               <ListFullTimeJob v-bind:listJob="listJob" />
              <!-- <div class="col-sm-6 col-lg-4 m-15px-tb">
                 <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px">
                     <ListFullTimeJob v-bind:listJob="listJob" />
@@ -117,7 +118,7 @@
             </div>
             <div class="col-sm-6 col-lg-4 m-15px-tb">
                 <div class="media box-shadow-only-hover hover-top border-all-1 border-color-gray p-15px">
-                    <ListFullTimeJob v-bind:listJob="listJob" />
+                    
                 </div>
             </div> -->
              </div>
@@ -128,11 +129,11 @@
 
 <script>
 import ListPartTimeJob from "../Job/ListPartTimeJob.vue"
-// import ListFullTimeJob from "../Job/ListFullTimeJob.vue"
+ import ListFullTimeJob from "../Job/ListFullTimeJob.vue"
 export default {
   components: {
     ListPartTimeJob,
-    // ListFullTimeJob,
+     ListFullTimeJob,
   },
   data() {
     return {
