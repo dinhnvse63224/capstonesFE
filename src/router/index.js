@@ -3,14 +3,18 @@ import VueRouter from 'vue-router'
 import Home from '../components/views/Home.vue'
 import AllJob from '../components/views/AllJob.vue'
 import Contact from '../components/views/Contact.vue'
+
 import StudentLogin from '../components/views/StudentLogin.vue'
-// import JobDetail from '../components/views/JobDetail.vue'
+import StudentProfile from '../components/views/StudentProfile.vue'
+
+import JobDetail from '../components/views/JobDetail.vue'
 
 //recruiter//
 import Recruiter from '../components/views/Recruiter.vue'
 import RecruiterRegister from '../components/views/RecruiterRegister.vue'
 import RecruiterProfile from '../components/views/RecruiterProfile.vue'
 import RecruiterLogin from '../components/views/RecruiterLogin.vue'
+import RecruiterPostJob from '../components/views/RecruiterPostJob.vue'
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -34,13 +38,17 @@ const router = new VueRouter({
       component: Contact
     },
     {
+      path: '/student-profile',
+      component: StudentProfile,
+    },
+    {
       path: '/student-login',
       component: StudentLogin,
     },
-    // {
-    //   path: '/job-detail',
-    //   component: JobDetail,
-    // },
+    {
+      path: '/job-detail',
+      component: JobDetail,
+    },
     {
       path: '/recruiter',
       component: Recruiter,
@@ -56,6 +64,10 @@ const router = new VueRouter({
     {
       path: '/recruiter-login',
       component: RecruiterLogin
+    },
+    {
+      path: '/recruiter-post-job',
+      component: RecruiterPostJob,
     }
   ]
 })
