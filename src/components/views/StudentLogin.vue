@@ -51,14 +51,15 @@
                     >Duy trì đăng nhập</label
                   >
                 </div>
-                <a href="profileStudent.html" class="btn btn-common log-btn"
-                  >Đăng Nhập</a
+                <router-link to="/student-profile" class="btn btn-common log-btn"
+                  >Đăng Nhập</router-link
                 >
-                <a
+                <!-- <a
                   href="#"
                   class="btn btn-common log-btn"
                   @click="created"
-                >
+                > -->
+                <router-link to="/student-profile">
                   Đăng nhập bằng
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -87,13 +88,9 @@
                     </g>
                   </svg>
                   Google
-                </a>
+                </router-link>
+                <!-- </a> -->
               </form>
-              <ul class="form-links">
-                <li class="text-center">
-                  <a href="registerStudent.html">Bạn chưa có tài khoản?</a>
-                </li>
-              </ul>
             </div>
           </div>
         </div>

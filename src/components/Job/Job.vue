@@ -1,6 +1,7 @@
 <template>
   <div class="col-lg-6 col-md-12 col-xs-12">
     <div class="jobs-latest">
+      <p hidden> {{job.id}} </p>
       <div class="img-thumb">
         <img v-bind:src="job.image" />
       </div>
@@ -8,14 +9,13 @@
         <h3>
            <router-link to="/job-detail">{{ job.name }}</router-link>
         </h3>
-        <p class="brand">{{ job.brand }}</p>
         <p class="major" hidden>{{ job.major }}</p>
         <div class="tags">
-          <i class="lni-map-marker"></i> {{ job.location }}
+          <i class="lni-map-marker"></i> Quận {{ job.location }}
         </div>
-        <div class="tag mb-3"><i class="lni-tag"></i> Yêu cầu việc làm </div>
-        <span v-if="job.type" class="full-time">Full time</span>
-        <span v-else class="part-time">Part time</span>       
+        <div class="tag mb-3"><i class="lni-tag"></i> {{job.requirement}} </div>
+        <span v-if="job.workingForm == 1" class="full-time">Full time</span>
+        <span v-else-if="job.workingForm == 2" class="part-time">Part time</span>       
       </div>
     </div>
   </div>

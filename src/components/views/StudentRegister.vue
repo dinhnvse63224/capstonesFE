@@ -126,13 +126,13 @@
           </div>
 
           <div class="mt-5 text-center">
-            <a href="profileStudent.html">
+            <router-link to="/student-profile">
               <button
                 class="btn btn-common log-btn"
                 type="btn btn-common log-btn"
               >
                 Đăng ký
-              </button></a
+              </button></router-link
             >
           </div>
         </div>

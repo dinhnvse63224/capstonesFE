@@ -1,5 +1,5 @@
 <template>
-  <div v-if="job.type" class="col-lg-6 col-md-12 col-xs-12">
+  <div v-if="job.workingForm == 1" class="col-lg-6 col-md-12 col-xs-12">
     <div class="fulltime">
       <div class="img-thumb">
         <img v-bind:src="job.image" />
@@ -8,12 +8,10 @@
         <h3>
           <router-link to="/job-detail">{{ job.name }}</router-link>
         </h3>
-        <p class="brand">{{ job.brand }}</p>
-        <p class="major" hidden>{{ job.major }}</p>
         <div class="tags">
-          <i class="lni-map-marker"></i> {{ job.location }}
+          <i class="lni-map-marker"></i> Quận {{ job.location }}
         </div>
-        <div class="tag mb-3"><i class="lni-tag"></i> {{ job.required }}</div>
+        <div class="tag mb-3"><i class="lni-tag"></i> {{ job.requirement }}</div>
         <span class="full-time"> Full time </span>
       </div>
     </div>
