@@ -6,6 +6,7 @@ import Contact from '../components/views/Contact.vue'
 
 import StudentLogin from '../components/views/StudentLogin.vue'
 import StudentProfile from '../components/views/StudentProfile.vue'
+import StudentUpdateCV from '../components/views/StudentUpdateCV.vue'
 
 import JobDetail from '../components/views/JobDetail.vue'
 
@@ -46,7 +47,12 @@ const router = new VueRouter({
       component: StudentLogin,
     },
     {
-      path: '/job-detail',
+      path: '/student-updateCV',
+      component: StudentUpdateCV
+    },
+    {
+      name: 'jobDetail',
+      path: '/job-detail/:id',
       component: JobDetail,
     },
     {
@@ -58,6 +64,7 @@ const router = new VueRouter({
       component: RecruiterRegister,
     },
     {
+      name: 'recruiter',
       path: '/recruiter-profile',
       component: RecruiterProfile,
     },

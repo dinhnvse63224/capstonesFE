@@ -11,22 +11,19 @@
         </div>
       </div>
     </div>
-    <div
-      v-if="recruiter"
-      class="container border-bottom bg-white mt-1 pt-md-3 pt-2"
-    >
+    <div class="container border-bottom bg-white mt-1 pt-md-3 pt-2">
       <div class="d-flex flex-md-row justify-content-around align-items-center">
         <div class="d-flex flex-md-row align-items-center">
           <div class="p-md-2">
             <img
-              v-bind:src="recruiter.image"
+              src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
               alt=""
               class="rounded-circle"
               id="profile"
             />
           </div>
           <div class="p-md-2 p-1" id="info">
-            <h5>{{ recruiter.fullname }}</h5>
+            <h5> {{profile.fullName}} </h5>
           </div>
         </div>
         <div class="rounded p-lg-2 p-1" id="blue-background">
@@ -35,110 +32,183 @@
               class="d-flex flex-column align-items-center px-lg-3 px-md-2 px-1"
               id="border-right"
             >
-              <p class="h4">0</p>
-              <div class="text-muted" id="count">Tổng tin</div>
+              <p class="h4"> {{list.length}}</p>
+              <div class="text-muted" id="count">Việc làm đã đăng</div>
             </div>
             <div
               class="d-flex flex-column align-items-center px-lg-3 px-md-2 px-1"
               id="border-right"
             >
-              <p class="h4">0</p>
-              <div class="text-muted" id="count">Tin đã duyệt</div>
+              <p class="h4">  {{countApproveJob()}} </p>
+              <div class="text-muted" id="count">Việc làm đã duyệt</div>
             </div>
             <div
               class="d-flex flex-column align-items-center px-lg-3 px-md-2 px-1"
               id="border-right"
             >
-              <p class="h4">0</p>
-              <div class="text-muted" id="count">Đang chờ duyệt</div>
+              <p class="h4"> {{countPendingJob()}} </p>
+              <div class="text-muted" id="count">Việc làm chờ duyệt</div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="tab-content w-100 pt-md-0">
-      <div
-        class="tab-pane show active"
-        id="user"
-        role="tabpanel"
-        aria-labelledby="user-tab"
-      >
-        <div class="container rounded-bottom bg-light">
-          <div class="row pl-lg-5 pt-md-0 pt-sm-2">
-            <div class="col-md-6 py-md-4">
-              <div class="d-flex flex-row">
-                <router-link to="/recruiter-post-job">
-                  <div class="btn border-primary text-primary selected-tab">
-                    Đăng tin tìm việc
-                  </div>
-                </router-link>
-              </div>
+      <div class="pl-lg-5 pt-lg-2 pt-md-1">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a
+              href="#user"
+              class="nav-link active"
+              id="user-tab"
+              data-toggle="tab"
+              role="tab"
+            >
+              Quản lý hồ sơ
+            </a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a
+              href="#job"
+              class="nav-link"
+              id="job-tab"
+              data-toggle="tab"
+              role="tab"
+            >
+              Việc làm đã đăng
+            </a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a
+              href="#result"
+              class="nav-link"
+              id="job-applied"
+              data-toggle="tab"
+              role="tab"
+            >
+              Danh sách ứng tuyển
+            </a>
+          </li>
+        </ul>
 
-              <div class="card">
-                <div class="card-body">
-                  <!-- Orders Table-->
-                  <!-- Orders Table-->
-                  <div class="col-lg-12 pb-5">
-                    <div class="table-responsive">
-                      <table class="table table-hover mb-0">
-                        <thead>
-                          <tr>
-                            <th>Tên công việc</th>
-                            <th>Ngày đăng ký</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- <tr>
-                            <td>
-                              <a
-                                class="navi-link"
-                                href="#order-details"
-                                data-toggle="modal"
-                                >Front-end</a
-                              >
-                            </td>
-                            <td>25/07/2021</td>
-                          </tr> -->
-                        </tbody>
-                      </table>
+        <!--tab content-->
+        <div class="tab-content w-100 pt-md-0">
+          <!--userProfile-->
+          <div
+            class="tab-pane show active"
+            id="user"
+            role="tabpanel"
+            aria-labelledby="user-tab"
+          >
+            <div class="container rounded-bottom bg-light">
+              <div class="row pl-lg-5 pt-md-0 pt-sm-2">
+                <div class="col-md-6 py-md-4">
+                  <div class="d-flex flex-row">
+                    <router-link to="/recruiter-post-job">
+                      <div class="btn border-primary text-primary selected-tab">
+                        Đăng việc làm
+                      </div>
+                    </router-link>
+                  </div>
+                  <div class="d-flex flex-row">
+                    <div class="btn border-primary text-primary selected-tab">
+                      <router-link to="/recruiter-edit-profile">
+                        Cập nhật thông tin cá nhân</router-link
+                      >
+                    </div>
+                  </div>    
+                  <div class="left">
+                    <label class="profile-title">Thông tin của bạn</label>
+                    <div class="row mt-2">
+                      <div class="col-md-6">
+                        <label class="labels">Họ & tên: {{profile.fullName}}</label>
+                      </div>
+                      <div class="col-md-8">
+                        <label class="labels">Gmail: {{profile.gmail}}</label>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="labels">Điện thoại: {{profile.phone}}</label>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="col-md-6 py-md-4">
-              <div class="d-flex flex-row">
-                <router-link to="/recruiter-edit-profile">
-                  <div class="btn border-primary text-primary selected-tab">
-                    Chỉnh sửa hồ sơ của bạn
+          <!--Job tab-->
+          <div
+            class="tab-pane fade"
+            id="job"
+            role="tabpanel"
+            aria-labelledby="job-tab"
+          >
+            <div class="container rounded-bottom bg-light">
+              <div class="container h-100">
+                <div class="row">
+                  <div class="card-body text-center">
+                    <div id="card">
+                      <div class="col-md-12 py-md-4">
+                        <div class="right">
+                          <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                              <thead>
+                                <tr class="align-self-center">
+                                  <th>Tên công việc</th>
+                                  <th>Ngày đăng ký</th>
+                                  <th>Trạng thái</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr v-for="(job, index) in list" v-bind:key="index" v-bind:job="job">
+                            <td> {{job.name}} </td>
+                            <td> {{job.createDate}} </td>
+                            <td v-if="status == 1"> Chưa duyệt </td>
+                            <td v-else> Đã duyệt </td>
+                          </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </router-link>
+                </div>
               </div>
+            </div>
+          </div>
 
-              <div class="card">
-                <div class="card-body">
-                  <div class="col-lg-12">
-                    <div class="main-box clearfix">
-                      <div class="table-responsive">
-                        <table class="table user-list">
-                          <thead>
-                            <tr>
-                              <th><span>Người ứng tuyển</span></th>
-                              <th><span>Ngày ứng tuyển</span></th>
-                              <th><span>Công việc</span></th>
-                              <th><span>Email</span></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <!-- <tr>
-                                        <td>
+          <!--Student applied-->
+          <div
+            class="tab-pane fade"
+            id="result"
+            role="tabpanel"
+            aria-labelledby="job-applied"
+          >
+            <div class="container rounded-bottom bg-light">
+              <div class="container h-100">
+                <div class="row">
+                  <div class="card-body text-center">
+                    <div class="card">
+                      <div class="col-md-12 py-md-4">
+                        <div class="right">
+                          <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                              <thead>
+                                <tr class="align-self-center">
+                                  <th><span>Người ứng tuyển</span></th>
+                                  <th><span>Ngày ứng tuyển</span></th>
+                                  <th><span>Công việc</span></th>
+                                  <th><span>Email</span></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <!-- <tr v-for="(list, index) in list" v-bind:key="index" v-bind:job="job"> -->
+                                        <!-- <td>
                                             <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
                                             <a href="#" class="user-link">George Clooney</a>
                                             <span class="user-subhead">Member</span>
-                                        </td>
-                                        <td>
-                                            2013/08/12
+                                        </td> -->
+                                        <!-- <td>
+                                            {{list.}}
                                         </td>
                                        <td>
                                             Front end
@@ -161,8 +231,11 @@
                                            
                                         </td>
                                     </tr> -->
-                          </tbody>
-                        </table>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <!--end table-responsive-->
                       </div>
                     </div>
                   </div>
@@ -181,19 +254,45 @@ import axios from "axios";
 export default {
   data() {
     return {
-      recruiter: null,
+      profile: "",
+      token: "",
+      list: [],
+      job: {
+        type: Object,
+        default: null,
+      }
     };
   },
   methods: {
-    async created() {
-      const response = await axios.get("https://localhost:44315/recruiter", {
-        headers: {
-          Authorization: "Bearer" + localStorage.getItem("access_token"),
-        },
-      });
-
-      this.recruiter = response.data;
+    countApproveJob() {
+      const count = this.list.filter((obj) => obj.status == 2).length;
+      return count;
     },
+    countPendingJob() {
+      const count = this.list.filter((obj) => obj.status == 1).length;
+      return count;
+    }
+  },
+  mounted() {
+    if (localStorage.getItem("recruiterProfile")) {
+      this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
+
+    }
+    if (localStorage.getItem("token")) {
+      this.token = localStorage.getItem("token");
+    }
+
+     axios
+        .get(
+          "https://localhost:44315/job/posted-jobs",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        ).then((response) => {
+          this.list = response.data.data;
+        }) 
   },
 };
 </script>

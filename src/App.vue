@@ -9,19 +9,17 @@
 </template>
 
 <script>
-
-import Navigator from './components/layout/Navigator.vue'
-import Footer from './components/layout/Footer.vue'
+import Navigator from "./components/layout/Navigator.vue";
+import Footer from "./components/layout/Footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navigator,
     Footer,
-  }
-}
+  },
+};
 </script>
 
 <style>
-
 </style>

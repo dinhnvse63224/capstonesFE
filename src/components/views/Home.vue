@@ -1,41 +1,67 @@
 <template>
   <div id="home">
-    <header id="home" class="hero-area">           
+    <header id="home" class="hero-area">
       <div class="container">
         <div class="row space-100 justify-content-center">
           <div class="col-lg-12 col-md-12 col-xs-12">
             <div class="contents">
               <h2 class="head-title">TÌM KIẾM VIỆC LÀM MƠ ƯỚC</h2>
               <div class="job-search-form">
-                <form>
+                <div id="search">
                   <div class="row">
-                    <div class="col-lg-5 col-md-6 col-xs-12">
+                    <div class="col-lg-4 col-md-6 col-xs-12">
                       <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Tên công ty hoặc việc làm"/>
+                        <input
+                          class="form-control"
+                          v-model="keyword"
+                          type="text"
+                          placeholder="Tên công ty hoặc việc làm"
+                        />
                       </div>
                     </div>
                     <div class="col-lg-2 col-md-6 col-xs-12">
                       <div class="form-group">
                         <div class="search-category-container">
                           <label class="styled-select">
-                            <select>
-                              <option v-for="(location, district) in locations" v-bind:key="district">
-                                {{ location.district }}
-                              </option>
+                            <select v-model="location">
+                              <option :value="null">Khu Vực</option>
+                              <option :value="1">Quận 1</option>
+                              <option :value="2">Quận 2</option>
+                              <option :value="3">Quận 3</option>
+                              <option :value="4">Quận 4</option>
+                              <option :value="5">Quận 5</option>
+                              <option :value="6">Quận 6</option>
+                              <option :value="7">Quận 7</option>
+                              <option :value="8">Quận 8</option>
+                              <option :value="9">Quận 9</option>
+                              <option :value="10">Quận 10</option>
+                              <option :value="11">Quận 11</option>
+                              <option :value="12">Quận 12</option>
+                              <option :value="13">Quận Bình Thạnh</option>
+                              <option :value="14">Quận Thủ Đức</option>
+                              <option :value="15">Quận Gò Vấp</option>
+                              <option :value="16">Quận Phú Nhuận</option>
+                              <option :value="17">Quận Tân Bình</option>
+                              <option :value="18">Quận Tân Phú</option>
+                              <option :value="19">Quận Bình Tân</option>
+                              <option :value="20">Huyện Nhà Bè</option>
+                              <option :value="21">Huyện Hóc Môn</option>
+                              <option :value="22">Huyện Bình Chánh</option>
+                              <option :value="23">Huyện Củ Chi</option>
+                              <option :value="24">Huyện Cần Giờ</option>
                             </select>
                           </label>
                         </div>
                         <i class="lni-map-marker"></i>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-6 col-xs-12">
+                    <div class="col-lg-3 col-md-6 col-xs-12">
                       <div class="form-group">
                         <div class="search-category-container">
                           <label class="styled-select">
-                            <select>
-                              <option v-for="(major, index) in majors" v-bind:key="index">
-                                {{ major.index }}
-                              </option>
+                            <select v-model="categoryCode">
+                              <option :value="null">Ngành nghề</option>
+                              <option v-for="(category, index) in listCategories" v-bind:key="index" v-bind:category="category"> {{category.value}} </option>
                             </select>
                           </label>
                         </div>
@@ -46,10 +72,10 @@
                       <div class="form-group">
                         <div class="search-category-container">
                           <label class="styled-select">
-                            <select>
-                              <option v-for="(type, index) in types" v-bind:key="index">
-                                {{ type.index }}
-                              </option>
+                            <select v-model="workingForm">
+                              <option :value="null">Hình thức</option>
+                              <option :value="1">Full time</option>
+                              <option :value="2">Part time</option>
                             </select>
                           </label>
                         </div>
@@ -57,13 +83,12 @@
                       </div>
                     </div>
                     <div class="col-lg-1 col-md-6 col-xs-12">
-                      <button type="submit" class="button">
+                      <button @click="search" class="button">
                         <i class="lni-search"></i>
                       </button>
                     </div>
                   </div>
-                </form>
-
+                </div>
               </div>
             </div>
           </div>
@@ -77,17 +102,8 @@
         <div class="section-header">
           <h2 class="section-title">VIỆC LÀM MỚI NHẤT</h2>
         </div>
-            <!-- <ListJob v-bind:listJob="listJob"/>  -->
-            <ListJob v-bind:list="list"/>
-            <!-- props data in ListJobs.vue -->
-            <!-- <div id="test">
-              <ul v-for="job in list" v-bind:key="job">
-                <li> {{job.name}} </li>  
-              </ul>
-              <button v-on:click="OpenListABC">Open</button>
-            </div> -->
+        <ListJob v-bind:list="list" />
       </div>
-      
 
       <!-- pagination -->
       <center>
@@ -121,251 +137,116 @@
 
     <!-- banner ads slider -->
     <div class="container-fluid">
-    <div class="row">
+      <div class="row">
         <div class="col-md-12">
-            <div class="carousel slide" id="carousel-554496">
-                <ol class="carousel-indicators">
-                    <li data-slide-to="0" data-target="#carousel-554496"> </li>
-                    <li data-slide-to="1" data-target="#carousel-554496"> </li>
-                    <li data-slide-to="2" data-target="#carousel-554496" class="active"> </li>
-                </ol>
-                <div class="carousel-inner">
-                    <div class="carousel-item">
-                      <img class="d-block w-100" alt="Carousel Bootstrap First" src="https://i.imgur.com/K7A78We.jpg" />              
-                    </div>
-                    <div class="carousel-item"> <img class="d-block w-100" alt="Carousel Bootstrap Second" src="https://i.imgur.com/c8952Iz.jpg" />
-                    </div>
-                    <div class="carousel-item active"> <img class="d-block w-100" alt="Carousel Bootstrap Third" src="https://i.imgur.com/K7A78We.jpg" />
-                    </div>
-                </div> <a class="carousel-control-prev" href="#carousel-554496" data-slide="prev"><span class="carousel-control-prev-icon"></span> <span class="sr-only">Previous</span></a> <a class="carousel-control-next" href="#carousel-554496" data-slide="next"><span class="carousel-control-next-icon"></span> <span class="sr-only">Next</span></a>
+          <div class="carousel slide" id="carousel-554496">
+            <ol class="carousel-indicators">
+              <li data-slide-to="0" data-target="#carousel-554496"></li>
+              <li data-slide-to="1" data-target="#carousel-554496"></li>
+              <li
+                data-slide-to="2"
+                data-target="#carousel-554496"
+                class="active"
+              ></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  alt="Carousel Bootstrap First"
+                  src="https://i.imgur.com/K7A78We.jpg"
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  class="d-block w-100"
+                  alt="Carousel Bootstrap Second"
+                  src="https://i.imgur.com/c8952Iz.jpg"
+                />
+              </div>
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  alt="Carousel Bootstrap Third"
+                  src="https://i.imgur.com/K7A78We.jpg"
+                />
+              </div>
             </div>
+            <a
+              class="carousel-control-prev"
+              href="#carousel-554496"
+              data-slide="prev"
+              ><span class="carousel-control-prev-icon"></span>
+              <span class="sr-only">Previous</span></a
+            >
+            <a
+              class="carousel-control-next"
+              href="#carousel-554496"
+              data-slide="next"
+              ><span class="carousel-control-next-icon"></span>
+              <span class="sr-only">Next</span></a
+            >
+          </div>
         </div>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script>
-import ListJob from '../Job/ListJob.vue'
-import axios from 'axios';
+import ListJob from "../Job/ListJob.vue";
+import axios from "axios";
 
 export default {
   data() {
     return {
-      majors: [
-        {
-          index: "Ngành nghề",
-        },
-        {
-          index: "Bán hàng",
-        },
-        {
-          index: "IT",
-        },
-        {
-          index: "Gia sư",
-        },
-        {
-          index: "Phục vụ",
-        },
-        {
-          index: "Sửa chữa",
-        },
-      ],
-      locations: [
-        {
-          district: "Khu vực",
-        },
-        {
-          district: "Quận 1",
-        },
-        {
-          district: "Quận 2",
-        },
-        {
-          district: "Quận 3",
-        },
-        {
-          district: "Quận 4",
-        },
-        {
-          district: "Quận 5",
-        },
-        {
-          district: "Quận 6",
-        },
-        {
-          district: "Quận 7",
-        },
-        {
-          district: "Quận 8",
-        },
-        {
-          district: "Quận 9",
-        },
-        {
-          district: "Quận 10",
-        },
-        {
-          district: "Quận 11",
-        },
-        {
-          district: "Quận 12",
-        },
-        {
-          district: "Quận Bình Tân",
-        },
-        {
-          district: "Quận Bình Thạnh",
-        },
-        {
-          district: "Quận Gò Vấp",
-        },
-        {
-          district: "Quận Phú Nhuận",
-        },
-        {
-          district: "Quận Tân Bình",
-        },
-        {
-          district: "Quận Tân Phú",
-        },
-        {
-          district: "Quận Thủ Đức",
-        },
-      ],
-      types: [
-        {
-          index: "Hình thức",
-        },
-        {
-          index: "Full time",
-        },
-        {
-          index: "Part time",
-        },
-      ],
-      listJob: [
-        {
-          jobID: 1,
-          name: "Bán hàng tại Minishop",
-          brand: "Minishop",
-          majors: "Bán hàng",
-          location: "Quận 1",
-          workingPlace: "168 Nguyễn Thị Minh Khai, Phường 6, Quận 1, Thành phố Hồ Chí Minh",
-          description: "Nhân viên bán hàng tại cửa hàng Minishop",
-          required: "Học sinh, sinh viên giao tiếp tốt, thân thiện với khách hàng, cần cù trong công việc",
-          salaryMin: 3000000,
-          salaryMax: 4500000,
-          offer: "Trợ cấp đào tạo hàng tháng, lương tháng 13",
-          quantity: 10,
-          createDate: "11/07/2020",
-          type: true,
-          image: "assets/img/features/img-1.jpg",
-        },
-        {
-          jobID: 2,
-          name: "Bán hàng tại Minishop",
-          brand: "Minishop",
-          majors: "Bán hàng",
-          location: "Quận 3",
-          workingPlace: "68 Nguyễn Đình Chiểu, Phường 6, Quận 3, Thành phố Hồ Chí Minh",
-          description: "Nhân viên bán hàng tại cửa hàng Minishop",
-          required: "Học sinh, sinh viên giao tiếp tốt, thân thiện với khách hàng, cần cù trong công việc",
-          salaryMin: 3000000,
-          salaryMax: 4500000,
-          offer: "Trợ cấp đào tạo hàng tháng, lương tháng 13",
-          quantity: 10,
-          createDate: "11/07/2020",
-          type: true,
-          image: "assets/img/features/img-1.jpg",
-        },
-        {
-          jobID: 3,
-          name: "Bán hàng tại Minishop",
-          brand: "Minishop",
-          majors: "Bán hàng",
-          location: "Quận 9",
-          workingPlace: "120 Lê Văn Việt, Phường Hiệp Phú, Quận 9, Thành phố Hồ Chí Minh",
-          description: "Nhân viên bán hàng tại cửa hàng Minishop",
-          required: "Học sinh, sinh viên giao tiếp tốt, thân thiện với khách hàng, cần cù trong công việc",
-          salaryMin: 3000000,
-          salaryMax: 4500000,
-          offer: "Trợ cấp đào tạo hàng tháng, lương tháng 13",
-          quantity: 10,
-          createDate: "11/07/2020",
-          type: true,
-          image: "assets/img/features/img-1.jpg",
-        },
-        {
-          jobID: 4,
-          name: "Bán hàng tại Minishop",
-          brand: "Minishop",
-          majors: "Bán hàng",
-          location: "Quận 7",
-          workingPlace: "18 Huỳnh Tấn Phát, Phường Bình Thuận, Quận 7, Thành phố Hồ Chí Minh",
-          description: "Nhân viên bán hàng tại cửa hàng Minishop",
-          required: "Học sinh, sinh viên giao tiếp tốt, thân thiện với khách hàng, cần cù trong công việc",
-          salaryMin: 3000000,
-          salaryMax: 4500000,
-          offer: "Trợ cấp đào tạo hàng tháng, lương tháng 13",
-          quantity: 10,
-          createDate: "11/07/2020",
-          type: true,
-          image: "assets/img/features/img-1.jpg",
-        },
-        {
-          jobID: 5,
-          name: "Bán hàng tại Minishop",
-          brand: "Minishop",
-          majors: "Bán hàng",
-          location: "Quận 5",
-          workingPlace: "57 Mạc Thiên Tích, Phường 8, Quận 5, Thành phố Hồ Chí Minh",
-          description: "Nhân viên bán hàng tại cửa hàng Minishop",
-          required: "Học sinh, sinh viên giao tiếp tốt, thân thiện với khách hàng, cần cù trong công việc",
-          salaryMin: 3000000,
-          salaryMax: 4500000,
-          offer: "Trợ cấp đào tạo hàng tháng, lương tháng 13",
-          quantity: 10,
-          createDate: "11/07/2020",
-          type: false,
-          image: "assets/img/features/img-1.jpg",
-        },
-        {
-          jobID: 6,
-          name: "Bán hàng tại Minishop",
-          brand: "Minishop",
-          majors: "Bán hàng",
-          location: "Quận 11",
-          workingPlace: "356 Lạc Long Quân, Phường 5, Quận 11, Thành phố Hồ Chí Minh",
-          description: "Nhân viên bán hàng tại cửa hàng Minishop",
-          required: "Học sinh, sinh viên giao tiếp tốt, thân thiện với khách hàng, cần cù trong công việc",
-          salaryMin: 3000000,
-          salaryMax: 4500000,
-          offer: "Trợ cấp đào tạo hàng tháng, lương tháng 13",
-          quantity: 10,
-          createDate: "11/07/2020",
-          type: false,
-          image: "assets/img/features/img-1.jpg",
-        },
-      ],
+      majors: [],
       list: [],
+      keyword: null,
+      location: null,
+      categoryCode: null,
+      workingForm: null,
+      listCategories: [],
+      category: {
+        type: Object,
+        default: null,
+      },
     };
   },
   components: {
     ListJob,
   },
   methods: {
-    
+    search() {
+      axios
+        .post("https://localhost:44315/search", {
+          keyword: this.keyword,
+          location: this.location,
+          categoryCode: this.categoryCode,
+          workingForm: this.workingForm,
+        })
+        .then((response) => {
+          this.list = response.data.data;
+        });
+    },
   },
-  mounted () {
-    // const tokenStr = 'hyaI8lKvbHoKJx4nTPb8Z8O4eZ0COS5DJ_ExJBE9c476nh2vFhjyZ_P6XA3EwGevo_AvqscQZQ0CKdhfKDRUC2RcTmey_d_FqiTz8ALPO8nPu8z2qep1mx9JdCafyzOtx73L62k7syTOfoI0swc3RmCtGgPtcJnfiZXoHYjpHQNqlMM90wBohwC1-D3Uc5e5qo9t2VNT4yZoi1_t3xulNLdJJpK_T2ZwnUtqsSx_EdzaXIjKHb2BK8dW2QY-lULrJcTswJIYu5RqA2vCTD7V0bY07r05p2V57u9ACXMc798SbLfbeK5HiNUdfNEnZfZcPsC8-W-AaxD6EdeFc6kt9g'
-    axios.get("https://localhost:44315/job", 
-    // { headers: {"Authorization" : `Bearer ${tokenStr}`} }
-    ).then(response => {
-      (this.list = response.data.data);
-      console.log(response.data.data) })
-  }
+  // mounted () {
+  // const tokenStr = 'hyaI8lKvbHoKJx4nTPb8Z8O4eZ0COS5DJ_ExJBE9c476nh2vFhjyZ_P6XA3EwGevo_AvqscQZQ0CKdhfKDRUC2RcTmey_d_FqiTz8ALPO8nPu8z2qep1mx9JdCafyzOtx73L62k7syTOfoI0swc3RmCtGgPtcJnfiZXoHYjpHQNqlMM90wBohwC1-D3Uc5e5qo9t2VNT4yZoi1_t3xulNLdJJpK_T2ZwnUtqsSx_EdzaXIjKHb2BK8dW2QY-lULrJcTswJIYu5RqA2vCTD7V0bY07r05p2V57u9ACXMc798SbLfbeK5HiNUdfNEnZfZcPsC8-W-AaxD6EdeFc6kt9g'
+  // axios.get("https://localhost:44315/job",
+  // { headers: {"Authorization" : `Bearer ${tokenStr}`} }
+  //   ).then(response => {
+  //     (this.list = response.data.data);
+  //     console.log(response.data.data) })
+  // }
+  mounted() {
+    axios.get("https://localhost:44315/job").then((response) => {
+      this.list = response.data.data;
+    });
+    axios.get("https://localhost:44315/job/categories").then((response) => {
+      this.listCategories = response.data.data;
+    });
+  },
+
 };
 </script>
 
@@ -442,14 +323,14 @@ a:link {
 
 /* banner ads slider */
 body {
-    background-color: #eee
+  background-color: #eee;
 }
 
 .container-fluid {
-    margin-top: 30px
+  margin-top: 30px;
 }
 
 .carousel-item img {
-    height: 400px
+  height: 400px;
 }
 </style>
