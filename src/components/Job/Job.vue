@@ -1,13 +1,12 @@
 <template>
   <div class="col-lg-6 col-md-12 col-xs-12">
     <div class="jobs-latest">
-      <p hidden> {{job.id}} </p>
       <div class="img-thumb">
         <img v-bind:src="job.image" />
       </div>
       <div class="content">
         <h3>
-           <router-link to="/job-detail">{{ job.name }}</router-link>
+           <router-link :to="{name:'jobDetail', params:{id:job.id}}">{{ job.name }}</router-link>
         </h3>
         <p class="major" hidden>{{ job.major }}</p>
         <div class="tags">

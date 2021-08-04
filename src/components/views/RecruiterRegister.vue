@@ -58,12 +58,6 @@
             </div>
             <div class="row mt-2">
               <div class="col-md-12">
-                <label class="labels">Avatar</label>
-                <input type="text" class="form-control" v-model="avatar" />
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-md-12">
                 <label class="labels">Họ và tên</label>
                 <input type="text" class="form-control" v-model="fullname" />
               </div>
@@ -128,8 +122,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      selected: "",
-      
+      selected: "",     
       username: '',
       password: '',
       confirmPassword: '', 
@@ -151,7 +144,7 @@ export default {
             avatar: this.avatar
         });
 
-        this.$router.push('/recruiter-profile');
+        this.$router.push('/recruiter-login');
     },
   },
 };

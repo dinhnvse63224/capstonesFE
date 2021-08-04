@@ -37,7 +37,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="Mã"
+                      placeholder="Mã OTP"
                     />
                   </div>
                 </div>
@@ -51,15 +51,10 @@
                     >Duy trì đăng nhập</label
                   >
                 </div>
-                <router-link to="/student-profile" class="btn btn-common log-btn"
+                <router-link to="" class="btn btn-common log-btn"
                   >Đăng Nhập</router-link
                 >
-                <!-- <a
-                  href="#"
-                  class="btn btn-common log-btn"
-                  @click="created"
-                > -->
-                <router-link to="/student-profile">
+                <button @click.prevent="StudentLogin" class="btn btn-common log-btn">
                   Đăng nhập bằng
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -88,8 +83,7 @@
                     </g>
                   </svg>
                   Google
-                </router-link>
-                <!-- </a> -->
+                </button>
               </form>
             </div>
           </div>
@@ -101,33 +95,82 @@
 </template>
 
 <script>
-// import firebase from 'firebase'
-// import firebaseui from 'firebaseui'
-// import "firebaseui/dist/firebaseui.css";
+import axios from "axios";
+import { firebase } from "@firebase/app";
+import "firebase/auth";
 export default {
   data() {
     return {
-      student: null,
+      id: "",
+      picture: "",
+      email: "",
     };
   },
-  // created() {
-  //   firebase.auth().onAuthStateChanged((student) => {
-  //     if (student) {
-  //       this.student = student;
-  //     }
-  //   });
-  // },
-  // mounted() {
-  //       var ui = new firebaseui.auth.AuthUI(firebase.auth());
-  //       var uiConfig = {
-  //           signInSuccessUrl: "/all",
-  //           signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
-  //       };
-  //       ui.start("#firebaseui-auth-container", uiConfig);
-  //   },
-  // methods: {
-  //   googleSignIn: function () {},
-  // },
+  methods: {
+    StudentLogin() {
+      const firebaseConfig = {
+        apiKey: "AIzaSyBDvwlPRvIcHRQuNitJ5s2ypKiYKP_iywk",
+        authDomain: "loginfirebase-b1bff.firebaseapp.com",
+        projectId: "loginfirebase-b1bff",
+        storageBucket: "loginfirebase-b1bff.appspot.com",
+        messagingSenderId: "28578870875",
+        appId: "1:28578870875:web:eb94c1277416d2e3c0b17e",
+        measurementId: "G-QXCPLH7ZY1",
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+      var querystring = require("querystring");
+
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((res) => {
+          this.id = res.additionalUserInfo.profile.id;
+          this.picture = res.additionalUserInfo.profile.picture;
+          this.email = res.additionalUserInfo.profile.email;          
+          axios
+            .post(
+              "https://localhost:44315/token?role=student",
+              querystring.stringify({
+                userName: this.email,
+                avatar: this.picture,
+                grant_type: "password",
+                google_id: this.id,
+              }),
+              {
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+              }
+            )
+            .then((response) => {
+              const tokenStr = response.data.access_token;
+              localStorage.setItem("token", tokenStr);
+              axios
+                .get("https://localhost:44315/student/self", {
+                  headers: {
+                    Authorization: `Bearer ${tokenStr}`,
+                  },
+                })
+                .then((response) =>
+                  localStorage.setItem(
+                    "studentProfile",
+                    JSON.stringify(response.data.data)
+                  )
+                )
+                .then(() => {
+                  const path = `/student-profile`;
+                  if (this.$route.path !== path) this.$router.push(path);
+                  window.location.reload();
+                });
+            })
+            .catch((error) => {
+              window.alert(error);
+            });
+        });
+    },
+  },
 };
 </script>
 
