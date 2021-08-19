@@ -37,34 +37,45 @@
                   Liên Hệ
                 </router-link>
               </li>
-              <li v-if="profile == ''" >
-                <router-link class="button btn btn-common" to="/recruiter">
-                  Nhà Tuyển Dụng
-                </router-link>
-              </li>
-              <li v-else-if="profile != ''" class="nav-item mx-1">
+              <li
+                v-if="studentProfile == '' && profile == ''"
+                class="nav-item active"
+              >
+                <!-- <router-link class="nav-link" to="/login"
+                  >Đăng nhập</router-link
+                > -->
                 <div class="dropdown">
-                  <div class="dropbtn">{{ profile.fullName}}</div>
+                  <div class="dropbtn">Đăng nhập</div>
                   <div class="dropdown-content">
-                    <router-link to="/recruiter-profile">Hồ sơ</router-link>
+                    <a href="#" @click.prevent="StudentLogin">
+                      <span> Sinh viên </span>
+                    </a>
+                    <router-link to="/recruiter-login"
+                      ><span>Nhà tuyển dụng</span></router-link
+                    >
+                  </div>
+                </div>
+              </li>
+              <li v-else-if="studentProfile != ''" class="nav-item mx-1">
+                <div v-if="studentProfile != ''" class="dropdown">
+                  <div class="dropbtn">
+                    <img class="avatar" v-bind:src="studentProfile.avatar" />
+                  </div>
+                  <div class="dropdown-content">
+                    <router-link to="/student-profile">Hồ sơ</router-link>
                     <a href="#" @click.prevent="Logout"
                       ><span>Đăng Xuất</span></a
                     >
                   </div>
                 </div>
               </li>
-
-              <li v-if="studentProfile == ''" class="nav-item active">
-                <router-link class="nav-link" to="/student-login"
-                  >Đăng nhập</router-link
-                >
-                <!-- chưa đẩy ra trang mới, để tạm -->
-              </li>
-              <li v-else-if="studentProfile != ''" class="nav-item mx-1">
+              <li v-else-if="profile != ''" class="nav-item mx-1">
                 <div class="dropdown">
-                  <div class="dropbtn"><img class="avatar" v-bind:src="studentProfile.avatar"/> </div>
+                  <div class="dropbtn">
+                    {{ profile.lastName }}
+                  </div>
                   <div class="dropdown-content">
-                    <router-link to="/student-profile">Hồ sơ</router-link>
+                    <router-link to="/recruiter-profile">Hồ sơ</router-link>
                     <a href="#" @click.prevent="Logout"
                       ><span>Đăng Xuất</span></a
                     >
@@ -81,6 +92,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { firebase } from "@firebase/app";
+import "firebase/auth";
 export default {
   data() {
     return {
@@ -91,10 +105,16 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("recruiterProfile")) {
+    if (
+      localStorage.getItem("recruiterProfile") &&
+      localStorage.getItem("userLogin") === "recruiter"
+    ) {
       this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
     }
-    if (localStorage.getItem("studentProfile")) {
+    if (
+      localStorage.getItem("studentProfile") &&
+      localStorage.getItem("userLogin") === "student"
+    ) {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
     }
   },
@@ -102,9 +122,80 @@ export default {
     Logout() {
       localStorage.removeItem("recruiterProfile");
       localStorage.removeItem("studentProfile");
+      localStorage.removeItem("userLogin");
       localStorage.removeItem("token");
       this.$router.push("/");
       window.location.reload();
+    },
+    StudentLogin() {
+      const firebaseConfig = {
+        apiKey: "AIzaSyBDvwlPRvIcHRQuNitJ5s2ypKiYKP_iywk",
+        authDomain: "loginfirebase-b1bff.firebaseapp.com",
+        projectId: "loginfirebase-b1bff",
+        storageBucket: "loginfirebase-b1bff.appspot.com",
+        messagingSenderId: "28578870875",
+        appId: "1:28578870875:web:eb94c1277416d2e3c0b17e",
+        measurementId: "G-QXCPLH7ZY1",
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+      var querystring = require("querystring");
+
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((res) => {
+          this.id = res.additionalUserInfo.profile.id;
+          this.picture = res.additionalUserInfo.profile.picture;
+          this.email = res.additionalUserInfo.profile.email;
+          this.familyName = res.additionalUserInfo.profile.family_name;
+          this.givenName = res.additionalUserInfo.profile.given_name;
+          axios
+            .post(
+              "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/token?role=student",
+              querystring.stringify({
+                userName: this.email,
+                avatar: this.picture,
+                name: this.familyName + this.givenName,
+                grant_type: "password",
+                google_id: this.id,
+              }),
+              {
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+              }
+            )
+            .then((response) => {
+              const tokenStr = response.data.access_token;
+              localStorage.setItem("token", tokenStr);
+              localStorage.setItem("userLogin", "student");
+              axios
+                .get(
+                  "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/self",
+                  {
+                    headers: {
+                      Authorization: `Bearer ${tokenStr}`,
+                    },
+                  }
+                )
+                .then((response) =>
+                  localStorage.setItem(
+                    "studentProfile",
+                    JSON.stringify(response.data.data)
+                  )
+                )
+                .then(() => {
+                  const path = `/student-profile`;
+                  if (this.$route.path !== path) this.$router.push(path);
+                  window.location.reload();
+                });
+            })
+            .catch((error) => {
+              window.alert(error);
+            });
+        });
     },
   },
 };

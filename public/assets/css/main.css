@@ -35,9 +35,9 @@ Domain Path:      /languages/
    GENERAL
    ========================================================================== */
 body {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: black;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 400;
   background: #fff;
   overflow-x: hidden;
@@ -51,7 +51,7 @@ p {
   font-size: 16px;
   color: black;
   line-height: 26px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin-bottom: 0;
 }
 
@@ -68,7 +68,7 @@ a {
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 40px;
   font-weight: 700;
   color: #191c1e;
@@ -122,7 +122,7 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 .section-header .section-title {
   font-size: 30px;
   margin-bottom: 10px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
   color: #333333;
   position: relative;
@@ -163,6 +163,7 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 }
 
 .btn-common:hover {
+  background: none #ff962b;
   color: #fff;
   box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.15), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
 }
@@ -1584,6 +1585,7 @@ button:focus {
 #latest-jobs .jobs-latest {
   background: #fff;
   margin: 15px 0;
+  height: 80%;
   border-radius: 4px;
   display: inline-block;
   width: 100%;
@@ -1599,8 +1601,7 @@ button:focus {
   float: left;
   position: relative;
   display: block;
-  line-height: 160px;
-  height: 150px;
+  line-height: 170px;
   border-right: 1px solid #f1f1f1;
   padding: 5px;
   width: 30%;
@@ -2283,7 +2284,7 @@ button:focus {
 }
 
 .panel-default .panel-heading a:after {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   content: "\e93a";
   position: absolute;
   right: 15px;
@@ -4488,18 +4489,6 @@ a:link {
   width: 80px;
   height: 34px;
   line-height: 34px;
-}
-
-.pagination_rounded ul li a {
-  float: left;
-  color: #00bcd4;
-  border-radius: 50%;
-  line-height: 30px;
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  margin-bottom: 40px;
-  border: 1px solid black;
 }
 
 .pagination_rounded .prev i {

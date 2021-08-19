@@ -5,13 +5,13 @@
         <div class="row-form">
           <div class="col-lg-12">
             <div class="inner-header">
-              <h3>Nhà tuyển dụng</h3>
+              <h3>Nhà tuyển Dụng</h3>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <form @submit.prevent="recruiterRegister">
+    <form @submit.prevent="recruiterProfileEdit">
       <div class="row">
         <div class="col-md-3 border-right">
           <div
@@ -25,9 +25,9 @@
             <span class="text-black-50"></span><span> </span>
           </div>
         </div>
-        <div class="col-md-6 border-right">
+        <div class="col-md-5 border-right">
           <div class="p-3 py-5">
-               <div class="row mt-3">
+            <div class="row mt-3">
               <div class="col-md-12">
                 <label class="labels">Tên tài khoản</label>
                 <input type="text" class="form-control" v-model="username" />
@@ -47,19 +47,28 @@
               </div>
             </div>            
             <div class="row mt-3">
-              <div class="col-md-7">
+              <div class="col-md-8">
                 <label class="labels">Email</label>
                 <input type="text" class="form-control" v-model="gmail" />
               </div>
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <label class="labels">Điện thoại</label>
                 <input type="text" class="form-control" v-model="phone" />
               </div>
             </div>
             <div class="row mt-2">
+              <div class="col-md-8">
+                <label class="labels">Họ</label>
+                <input type="text" class="form-control" v-model="firstName" />
+              </div>
+              <div class="col-md-4">
+                <label class="labels">Tên</label>
+                <input type="text" class="form-control" v-model="lastName" />
+              </div>
+            </div>
+            <div v-if="error" class="row mt-3">
               <div class="col-md-12">
-                <label class="labels">Họ và tên</label>
-                <input type="text" class="form-control" v-model="fullname" />
+                <label class="error-message text-danger">Vui lòng điền đủ các thông tin.</label>
               </div>
             </div>
            
@@ -68,7 +77,7 @@
                   class="btn btn-common log-btn"
                   type="btn btn-common log-btn"
                 >
-                  Đăng ký
+                  Cập nhật
                 </button>
             </div>
           </div>
@@ -83,6 +92,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      profile: "",
+      token: "",
       selected: "",     
       username: '',
       password: '',
@@ -90,27 +101,52 @@ export default {
       gmail: '',
       phone: '',
       avatar: '',
-      fullname: '',
+      firstName: '',
+      lastName: '',
+      error: false,
     };
   },
   methods: {
-    async recruiterRegister() {
-        await axios.post('http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/register', {
-            fullname: this.fullname,
+    async recruiterProfileEdit() {
+      await axios.put('http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/update', {
+            firstName: this.firstName,
+            lastName: this.lastName,
             gmail: this.gmail,
             phone: this.phone,
             username: this.username,
-            password: this.password,
-            confirmPassword: this.confirmPassword,
-            avatar: this.avatar,
-            firstname: this.fullname,
-            lastname: this.fullname
-        }).catch((e) => {
-          console.log(e.response);
-        });
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
 
-        this.$router.push('/recruiter-login');
+      }).catch((error) => {
+        if (error.response.status == 400) {
+          this.error = true;
+        }
+      }).then((res) => {
+        localStorage.setItem(
+            "recruiterProfile",
+            res.config.data
+        )
+
+        this.$router.push('/recruiter-profile');
+      })
+
+
     },
+  },
+
+  mounted() {
+    if (localStorage.getItem("recruiterProfile")) {
+      this.firstName = JSON.parse(localStorage.getItem("recruiterProfile")).firstName;
+      this.lastName = JSON.parse(localStorage.getItem("recruiterProfile")).lastName;
+      this.gmail = JSON.parse(localStorage.getItem("recruiterProfile")).gmail;
+      this.phone = JSON.parse(localStorage.getItem("recruiterProfile")).phone;
+      this.username = JSON.parse(localStorage.getItem("recruiterProfile")).username;
+    }
+    if (localStorage.getItem("token")) {
+      this.token = localStorage.getItem("token");
+    }
   },
 };
 </script>

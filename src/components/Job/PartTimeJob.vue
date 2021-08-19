@@ -1,19 +1,19 @@
 <template>
   <div v-if="job.workingForm == 2" class="col-lg-6 col-md-12 col-xs-12">
     <div class="parttime">
-      <div class="img-thumb">
-        <img v-bind:src="job.image" />
+      <div class="img-wraper">
+        <img v-bind:src="job.imgUrl" height="150" width="150"/>
       </div>
       <div class="content">
         <h3>
-          <router-link to="/job-detail">{{ job.name }}</router-link>
+          <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>
         </h3>
         <p class="brand">{{ job.brand }}</p>
         <p class="major" hidden>{{ job.major }}</p>
         <div class="tags">
           <i class="lni-map-marker"></i> Quận {{ job.location }}
         </div>
-        <div class="tag mb-3"><i class="lni-tag"></i> {{ job.requirement }}</div>
+        <div class="tag mb-3">{{ job.createDate }}</div>
         <span class="part-time"> Part time</span>
       </div>
     </div>
@@ -38,6 +38,7 @@ export default {
   border-radius: 4px;
   display: inline-block;
   width: 100%;
+  height: 400px;
   position: relative;
   box-shadow: 0px 0px 14px rgba(191, 191, 191, 0.24);
   transition: all 0.3s ease-in-out;

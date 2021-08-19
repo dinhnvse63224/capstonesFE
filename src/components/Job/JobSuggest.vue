@@ -4,9 +4,12 @@
       <div hidden class="getID">
         {{ job.jobID }}
       </div>
-      <div class="img-thumb">
-        <img v-bind:src="job.image" />
+      <div v-if="job.imgUrl != ''" class="img-thumb">
+        <img :src="job.imgUrl" width="130" height="130" />
       </div>
+      <div v-else class="img-thumb">
+        <img src="/assets/img/logo.png" width="130" height="130"/>
+        </div>
       <div class="content">
         <h3>
           <router-link to="/job-detail">{{ job.name }}</router-link>

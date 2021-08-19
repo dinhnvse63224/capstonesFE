@@ -9,7 +9,7 @@
               <div class="job-search-form">
                 <form>
                   <div class="row">
-                    <div class="col-lg-5 col-md-6 col-xs-12">
+                    <div class="col-lg-4 col-md-6 col-xs-12">
                       <div class="form-group">
                         <input
                           class="form-control"
@@ -35,7 +35,7 @@
                         <i class="lni-map-marker"></i>
                       </div>
                     </div>
-                    <div class="col-lg-2 col-md-6 col-xs-12">
+                    <div class="col-lg-3 col-md-6 col-xs-12">
                       <div class="form-group">
                         <div class="search-category-container">
                           <label class="styled-select">
@@ -83,24 +83,34 @@
       </div>
     </header>
     <section id="latest-jobs" class="section bg-gray">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 col-md-12 col-xs-12">
-            <div>
-              <h2>Việc làm full time</h2>
-            </div>
-            <div class="container">
-              <ListFullTimeJob v-bind:listJob="listJob" />
+      <div class="row">
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
+        </div>
+        <div class="col-md-8">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-xs-12">
+                <div>
+                  <h2>Việc làm full time</h2>
+                </div>
+                <div class="container">
+                  <ListFullTimeJob v-bind:listJob="listJob" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-xs-12">
+                <div>
+                  <h2>Việc làm part time</h2>
+                </div>
+                <div class="container">
+                  <ListPartTimeJob v-bind:listJob="listJob" />
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-12 col-xs-12">
-            <div>
-              <h2>Việc làm part time</h2>
-            </div>
-            <div class="container">
-              <ListPartTimeJob v-bind:listJob="listJob" />
-            </div>
-          </div>
+        </div>
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
         </div>
       </div>
     </section>
@@ -490,7 +500,7 @@ export default {
   },
   mounted () {
     // const tokenStr = 'hyaI8lKvbHoKJx4nTPb8Z8O4eZ0COS5DJ_ExJBE9c476nh2vFhjyZ_P6XA3EwGevo_AvqscQZQ0CKdhfKDRUC2RcTmey_d_FqiTz8ALPO8nPu8z2qep1mx9JdCafyzOtx73L62k7syTOfoI0swc3RmCtGgPtcJnfiZXoHYjpHQNqlMM90wBohwC1-D3Uc5e5qo9t2VNT4yZoi1_t3xulNLdJJpK_T2ZwnUtqsSx_EdzaXIjKHb2BK8dW2QY-lULrJcTswJIYu5RqA2vCTD7V0bY07r05p2V57u9ACXMc798SbLfbeK5HiNUdfNEnZfZcPsC8-W-AaxD6EdeFc6kt9g'
-    axios.get("https://localhost:44315/job", 
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job", 
     // { headers: {"Authorization" : `Bearer ${tokenStr}`} }
     ).then(response => {
       (this.listJob = response.data.data);

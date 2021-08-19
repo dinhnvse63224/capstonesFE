@@ -5,7 +5,7 @@
         <div class="row-form">
           <div class="col-lg-12">
             <div class="inner-header">
-              <h3>Nhà tuyển Dụng</h3>
+              <h3>Tạo mới việc làm</h3>
             </div>
           </div>
         </div>
@@ -18,7 +18,15 @@
         <div class="card shadow-lg card-1">
           <div class="card-body inner-card">
             <div class="row justify-content-center">
+              <div class="col-lg-12 col-md-6 col-sm-12">
+                <div class="d-flex flex-row">
+                  <div>
+                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a><br />
+                  </div>
+                </div>
+              </div>
               <div class="col-lg-5 col-md-6 col-sm-12">
+
                 <div class="form-group">
                   <label for="first-name">Tên việc làm*</label
                   ><input
@@ -38,50 +46,22 @@
                 </div>
                 <div class="form-group">
                   <label for="time"> Mức Lương Tối Thiểu(VNĐ)*</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="salaryMin"
-                    id="time"
-                    placeholder=""
-                  />
+                  <vue-numeric id="time" class="form-control" separator="," v-model="salaryMin"></vue-numeric>
                 </div>
-                <div class="form-group">
                   <label for="inputEmail4">Ngành nghề*</label>
-                  <!-- <multiselect
-                    v-model="categories"
-                    :options="options"
-                    :multiple="true"
-                    :close-on-select="false"
-                    :clear-on-select="false"
-                    :preserve-search="true"
-                    label="code"
-                    track-by="code"
-                    :preselect-first="true"
+                  <multiselect
+                      v-model="multiCategory"
+                      :options="list"
+                      :multiple="true"
+                      :close-on-select="true"
+                      placeholder=""
+                      label="value"
+                      track-by="code"
+                      class="form-control w-auto"
                   >
-                    <template
-                      slot="selection"
-                      slot-scope="{ values, isOpen }"
-                      ><span
-                        class="multiselect__single"
-                        v-if="values.length &amp;&amp; !isOpen"
-                        >{{ values.length }} options selected</span
-                      ></template
-                    >
-                  </multiselect> -->
-                  <select v-model="categories" class="form-control">
-                    <option
-                      v-for="(categories, index) in list"
-                      v-bind:key="index"
-                      v-bind:categories="categories"
-                      :value="categories.code"
-                    >
-                      {{ categories.value }}
-                    </option>
-                  </select>
-                </div>
+                  </multiselect>
                 <div class="form-group">
-                  <label class="labels" for="sex">Yêu cầu giới tính</label
+                  <label class="labels" for="sex">Yêu cầu giới tính*</label
                   ><br />
                   <select
                     v-model="sex"
@@ -93,10 +73,11 @@
                     <option :value="2">Nữ</option>
                   </select>
                 </div>
+                
               </div>
               <div class="col-lg-5 col-md-6 col-sm-12">
                 <div class="form-group">
-                  <label for="phone">Quận</label>
+                  <label for="phone">Quận*</label>
                   <select v-model="location" class="form-control">
                     <option :value="null">Khu Vực</option>
                     <option :value="1">Quận 1</option>
@@ -137,13 +118,7 @@
                 </div>
                 <div class="form-group">
                   <label for="time"> Mức Lương Tối Đa(VNĐ)*</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="salaryMax"
-                    id="time"
-                    placeholder=""
-                  />
+                  <vue-numeric id="time" class="form-control" separator="," v-model="salaryMax"></vue-numeric>
                 </div>
                 <div class="form-group">
                   <label for="skill">Số người cần tuyển*</label>
@@ -155,6 +130,22 @@
                     placeholder=""
                   />
                 </div>
+                <div class="form-group">
+                  <label class="labels" for="days">Số ngày tồn tại*</label
+                  ><br />
+                  <select
+                    v-model="activeDays"
+                    name="days"
+                    id="sex"
+                    class="form-control"
+                  >
+                    <option :value="5">5 ngày - 100.000 VNĐ</option>
+                    <option :value="10">10 ngày - 200.000 VNĐ</option>
+                    <option :value="20">15 ngày - 300.000 VNĐ</option>
+                    <option :value="30">30 ngày - 500.000 VNĐ</option>
+
+                  </select>
+                </div>
               </div>
             </div>
             <div class="row justify-content-center">
@@ -163,12 +154,7 @@
                   <label for="exampleFormControlTextarea2"
                     >Mô tả công viêc*</label
                   >
-                  <textarea
-                    class="form-control rounded-0"
-                    v-model="description"
-                    id="exampleFormControlTextarea2"
-                    rows="5"
-                  ></textarea>
+                  <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
                 </div>
               </div>
             </div>
@@ -178,12 +164,7 @@
                   <label for="exampleFormControlTextarea2"
                     >Yêu cầu công việc*</label
                   >
-                  <textarea
-                    class="form-control rounded-0"
-                    v-model="requirement"
-                    id="exampleFormControlTextarea2"
-                    rows="5"
-                  ></textarea>
+                  <vue-editor v-model="requirement" :editorToolbar="customToolbar"></vue-editor>
                 </div>
               </div>
             </div>
@@ -191,12 +172,7 @@
               <div class="col-md-12 col-lg-10 col-12">
                 <div class="form-group">
                   <label for="exampleFormControlTextarea2">Quyền lợi*</label>
-                  <textarea
-                    class="form-control rounded-0"
-                    v-model="offer"
-                    id="exampleFormControlTextarea2"
-                    rows="5"
-                  ></textarea>
+                  <vue-editor v-model="offer" :editorToolbar="customToolbar"></vue-editor>
                 </div>
                 <div class="mb-2 mt-4">
                   <div
@@ -224,8 +200,8 @@
                     tabindex="-1"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
-                  >
-                    <div class="modal-dialog">
+                  > -->
+                    <!-- <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel">
@@ -258,8 +234,8 @@
                           </button>
                         </div>
                       </div>
-                    </div>
-                  </div> -->
+                    </div> -->
+                  <!-- </div> -->
                 </div>
               </div>
             </div>
@@ -272,6 +248,10 @@
 
 <script>
 import axios from "axios";
+import { VueEditor } from "vue2-editor";
+import VueNumeric from 'vue-numeric';
+import Multiselect from 'vue-multiselect'
+
 export default {
   data() {
     return {
@@ -289,15 +269,26 @@ export default {
       salaryMax: "",
       list: [],
       categories: [],
+      activeDays: "",
+      multiCategory: [],
       token: "",
+      options: [
+        { name: 'Vue.js', language: 'JavaScript' },
+        { name: 'Rails', language: 'Ruby' },
+        { name: 'Sinatra', language: 'Ruby' },
+        { name: 'Laravel', language: 'PHP', $isDisabled: true }
+      ],
+      customToolbar: [[{ list: "ordered" }, { list: "bullet" }, { list: "check" }]],
     };
   },
   components: {
-    
+    VueEditor,
+    VueNumeric,
+    Multiselect
   },
 
   mounted() {
-    axios.get("https://localhost:44315/job/categories").then((response) => {
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.list = response.data.data;
 
     });
@@ -316,6 +307,9 @@ export default {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.token}`,
       };
+      this.multiCategory.forEach((cate) => {
+        this.categories.push(cate.code);
+      })
       const data = {
         name: this.name,
         workingForm: this.workingForm,
@@ -329,11 +323,13 @@ export default {
         quantity: this.quantity,
         description: this.description,
         salaryMax: this.salaryMax,
-        categories: [this.categories],
+        categories: this.categories,
+        activeDays: this.activeDays,
       };
+      console.log(data);
       await console.log(data);
       await axios
-        .post("https://localhost:44315/job/create", data, {
+        .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/create", data, {
           headers: header,
         })
         .then(
@@ -343,6 +339,6 @@ export default {
   },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 </style>
