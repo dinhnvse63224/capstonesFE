@@ -14,31 +14,18 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-6 col-md-4 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-xs-12">
               <div class="widget">
-                <h3 class="block-title">Student Job Website</h3>
+                <h3 class="block-title">Student Find Job Website</h3>
                 <ul class="menu">
-                    <li><a href="#">Về chúng tôi</a></li>
-                    <li><a href="#">Hỗ trợ</a></li>
-                    <li><a href="#">Giấy phép</a></li>
-                </ul>
-                <ul class="menu">
-                    <li><a href="#">Điều khoản dịch vụ</a></li>
-                    <li><a href="#">Chính sách bảo mật</a></li>
-                    <li><a href="#">Liên hệ quảng cáo</a></li>
+                    <li><a href="https://sac.vn/" target="_blank">Về chúng tôi</a></li>
+                    <li><a href="https://www.facebook.com/hotrohssv/" target="_blank">Hỗ trợ</a></li>
+                    <li><router-link to="/contact">Liên hệ quảng cáo</router-link></li>
                 </ul>
             </div>
             </div>
-            <div class="col-lg-3 col-md-4 col-xs-12">
-              <div class="widget">
-                <h3 class="block-title">Liên hệ</h3>
-                <ul class="mt-3 footer-social">
-                  <li><a class="facebook" href="#"><i class="lni-facebook-filled"></i></a></li>
-                  <li><a class="twitter" href="#"><i class="lni-twitter-filled"></i></a></li>
-                  <li><a class="linkedin" href="#"><i class="lni-linkedin-fill"></i></a></li>
-                  <li><a class="google-plus" href="#"><i class="lni-google-plus"></i></a></li>
-                </ul>        
-              </div>
+            <div class="col-lg-5 col-md-4 col-xs-12">
+              <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fhotrohssv%2F&tabs=timeline&width=700&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="700" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
           </div>
         </div>

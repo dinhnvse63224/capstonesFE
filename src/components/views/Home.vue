@@ -61,7 +61,7 @@
                           <label class="styled-select">
                             <select v-model="categoryCode">
                               <option :value="null">Ngành nghề</option>
-                              <option v-for="(category, index) in listCategories" v-bind:key="index" v-bind:category="category"> {{category.value}} </option>
+                              <option v-for="(category, index) in listCategories" v-bind:key="index" v-bind:category="category" :value="category.code"> {{category.value}} </option>
                             </select>
                           </label>
                         </div>
@@ -98,110 +98,57 @@
 
     <!-- Latest Section Start -->
     <section id="latest-jobs" class="section bg-gray">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">VIỆC LÀM MỚI NHẤT</h2>
+      <div class="row">
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
         </div>
-        <ListJob v-bind:list="list" />
+        <div class="col-md-8">
+          <div class="container">
+            <div class="section-header">
+              <h2 class="section-title">VIỆC LÀM MỚI NHẤT</h2>
+              <p v-if="allJob.length === 0"> Không có công việc nào phù hợp </p>
+            </div>
+            <ListJob v-bind:list="list" />
+          </div>
+        </div>
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
+        </div>
       </div>
 
       <!-- pagination -->
       <center>
         <div class="pagination_rounded">
-          <ul>
-            <li>
-              <a href="#" class="prev">
-                <i class="fa fa-angle-left" aria-hidden="true"></i> Trước
-              </a>
-            </li>
-            <li><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="visible-xs"><a href="#">...</a></li>
-            <li><a href="#"></a></li>
-            <li>
-              <a href="#" class="next">
-                Sau <i class="fa fa-angle-right" aria-hidden="true"></i
-              ></a>
-            </li>
-          </ul>
+          <paginate
+              :page-count="pageCount"
+              :page-range="3"
+              :margin-pages="2"
+              :click-handler="clickCallback"
+              :prev-text="' Trước '"
+              :next-text="' Sau '"
+              :container-class="'pagination'"
+              :active-class="'active'"
+              :page-class="'page-item'">
+          </paginate>
         </div>
       </center>
     </section>
-
-    <!-- banner ads slider -->
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="carousel slide" id="carousel-554496">
-            <ol class="carousel-indicators">
-              <li data-slide-to="0" data-target="#carousel-554496"></li>
-              <li data-slide-to="1" data-target="#carousel-554496"></li>
-              <li
-                data-slide-to="2"
-                data-target="#carousel-554496"
-                class="active"
-              ></li>
-            </ol>
-            <div class="carousel-inner">
-              <div class="carousel-item">
-                <img
-                  class="d-block w-100"
-                  alt="Carousel Bootstrap First"
-                  src="https://i.imgur.com/K7A78We.jpg"
-                />
-              </div>
-              <div class="carousel-item">
-                <img
-                  class="d-block w-100"
-                  alt="Carousel Bootstrap Second"
-                  src="https://i.imgur.com/c8952Iz.jpg"
-                />
-              </div>
-              <div class="carousel-item active">
-                <img
-                  class="d-block w-100"
-                  alt="Carousel Bootstrap Third"
-                  src="https://i.imgur.com/K7A78We.jpg"
-                />
-              </div>
-            </div>
-            <a
-              class="carousel-control-prev"
-              href="#carousel-554496"
-              data-slide="prev"
-              ><span class="carousel-control-prev-icon"></span>
-              <span class="sr-only">Previous</span></a
-            >
-            <a
-              class="carousel-control-next"
-              href="#carousel-554496"
-              data-slide="next"
-              ><span class="carousel-control-next-icon"></span>
-              <span class="sr-only">Next</span></a
-            >
-          </div>
-        </div>
-      </div>
-    </div>
+  
   </div>
 </template>
 
 <script>
 import ListJob from "../Job/ListJob.vue";
 import axios from "axios";
+import Paginate from 'vuejs-paginate'
 
 export default {
   data() {
     return {
       majors: [],
       list: [],
+      pageCount : 0,
+      allJob: [],
       keyword: null,
       location: null,
       categoryCode: null,
@@ -215,19 +162,38 @@ export default {
   },
   components: {
     ListJob,
+    Paginate
   },
   methods: {
     search() {
+      let data = {
+        keyword: this.keyword,
+        location: this.location,
+        categoryCode: this.categoryCode,
+        workingForm: this.workingForm,
+      }
+      console.log(data);
       axios
-        .post("https://localhost:44315/search", {
+        .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/search", {
           keyword: this.keyword,
           location: this.location,
           categoryCode: this.categoryCode,
           workingForm: this.workingForm,
         })
         .then((response) => {
-          this.list = response.data.data;
-        });
+          this.allJob = response.data.data === null ? [] : response.data.data;
+          console.log(this.allJob.length);
+          this.pageCount = Math.ceil(this.allJob.length / 8);
+          this.list = this.paginate(this.allJob, 8, 1);
+        }).catch((e) => {
+        console.log(e.response);
+      });
+    },
+    paginate(array, page_size, page_number) {
+      return array.slice((page_number - 1) * page_size, page_number * page_size);
+    },
+    clickCallback(number) {
+      this.list = this.paginate(this.allJob, 8, number);
     },
   },
   // mounted () {
@@ -239,10 +205,13 @@ export default {
   //     console.log(response.data.data) })
   // }
   mounted() {
-    axios.get("https://localhost:44315/job").then((response) => {
-      this.list = response.data.data;
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job").then((response) => {
+      this.allJob = response.data.data;
+      this.pageCount = Math.ceil(this.allJob.length / 8);
+      this.list = this.paginate(this.allJob, 8, 1);
+      console.log(this.list);
     });
-    axios.get("https://localhost:44315/job/categories").then((response) => {
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.listCategories = response.data.data;
     });
   },

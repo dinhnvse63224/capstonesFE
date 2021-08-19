@@ -96,7 +96,7 @@ export default {
       var querystring = require("querystring");
       await axios
         .post(
-          "https://localhost:44315/token?role=recruiter",
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/token?role=recruiter",
           querystring.stringify({
             username: this.username,
             password: this.password,
@@ -111,8 +111,9 @@ export default {
         .then((response) => {
           const tokenStr = response.data.access_token;
           localStorage.setItem("token", tokenStr)
+          localStorage.setItem("userLogin", "recruiter")
           axios
-            .get("https://localhost:44315/recruiter/self", {
+            .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/self", {
               headers: {
                 Authorization: `Bearer ${tokenStr}`,
               },

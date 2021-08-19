@@ -1,8 +1,6 @@
 <template>
   <div class="row">   
-        <JobSuggest v-for="(job, index) in listJob" v-bind:key="index" v-bind:job="job"/>
-        <!-- run for job, index can replace by anything -->
-        <!-- v-bind:key="anything replace from index" -->
+        <JobSuggest v-for="(job, index) in jobSuggest" v-bind:key="index" v-bind:job="job"/>
   </div>
 </template>
 
@@ -10,7 +8,7 @@
 import JobSuggest from "./JobSuggest.vue";
 export default {
   props: {
-    listJob: {
+    jobSuggest: {
       type: Array,
       default: function () {
         return [];

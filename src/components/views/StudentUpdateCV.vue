@@ -11,23 +11,11 @@
         </div>
       </div>
     </div>
-    <!-- <form @submit="studentRegister"> -->
     <form>
       <div class="row">
-        <div class="col-md-3 border-right">
-          <div
-            class="d-flex flex-column align-items-center text-center p-3 py-5"
-          >
-            <!-- <img
-              class="rounded-circle mt-5"
-              width="150px"
-              src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-            /> -->
-          </div>
-        </div>
         <div class="col-md-8 border-right">
           <div class="p-3 py-5">
-            <div class="row mt-2">
+            <div class="row mt-3">
               <div class="col-md-8">
                 <label class="labels">Họ và Tên*</label>
                 <input type="text" class="form-control" v-model="name" />
@@ -60,7 +48,7 @@
             </div>
             <div class="row mt-3">
               <div class="col-md-8">
-                <label class="labels">Ngoại ngữ</label>
+                <label class="labels">Ngoại ngữ*</label>
                 <textarea
                   type="text"
                   class="form-control"
@@ -90,16 +78,20 @@
               </div>
             </div>
 
+            <div class="row mt-3" v-if="isError">
+              <div class="col-md-7 text-danger">
+                Vui lòng điền đủ các thông tin.
+              </div>
+            </div>
+
             <div class="mt-5 text-center">
-              <router-link to="/student-profile">
-                <button
-                  @click="updateCV"
+              <button
+                  @click.prevent="updateCV"
                   class="btn btn-common log-btn"
                   type="btn btn-common log-btn"
-                >
-                  Cập nhật
-                </button></router-link
               >
+                Cập nhật
+              </button>
             </div>
           </div>
         </div>
@@ -121,10 +113,42 @@ export default {
       foreignLanguage: "",
       desiredSalaryMinimum: "",
       workingForm: "",
+      isError: false,
+      isCreated: false,
     };
+  },
+
+  created() {
+    if (localStorage.getItem("token")) {
+      this.token = localStorage.getItem("token");
+    }
+    const header = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${this.token}`,
+    };
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv",
+        {
+          headers: header
+        }
+    ).then(response => {
+      const cv = response.data.data;
+      if (cv.name) {
+        this.isCreated = true;
+      }
+      this.name = cv.name;
+      this.dob = cv.dob;
+      this.sex = cv.sex;
+      this.school = cv.school;
+      this.experience = cv.experience;
+      this.foreignLanguage = cv.foreignLanguage;
+      this.desiredSalaryMinimum = cv.desiredSalaryMinimum;
+      this.workingForm = cv.workingForm;
+    })
   },
   methods: {
      updateCV() {
+       this.isError = false;
+
       if (localStorage.getItem("token")) {
         this.token = localStorage.getItem("token");
       }
@@ -134,6 +158,7 @@ export default {
       };
       const data = {
         name: this.name,
+        cvName: this.name,
         sex: this.sex,
         dob: this.dob,
         school: this.school,
@@ -142,14 +167,26 @@ export default {
         desiredSalaryMinimum: this.desiredSalaryMinimum,
         workingForm: this.workingForm,
       };
-       axios
-        .post("https://localhost:44315/student/cv/create", data, {
-          headers: header,
-        })
+      const response = this.isCreated ? axios
+          .put(`http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/update`, data, {
+            headers: header,
+          })
+          :
+          axios
+              .post(`http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/create`, data, {
+                headers: header,
+              })
+       response
         .then(() => {
           this.$router.push("/student-profile");
           window.location.reload;
-        });
+        })
+       .catch(e => {
+         const { status } = e.response;
+         if (status === 400) {
+           this.isError = true;
+         }
+       });
     },
   },
 };
