@@ -21,21 +21,14 @@
                   <a href="#" @click="$router.go(-1)"> Trở về trang cá nhân</a>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
-                  <div class="row mt-2">
-                    <div class="col-md-10" >
-                      <!-- <img v-if="avatar =='' " :src="studentProfile.avatar" width="150px"/> -->
-                      <img v-bind:src="avatar" width="150px" />
+                  <!-- <div class="row mt-2">
+                    <div class="col-md-12" >
+                      <img v-if="avatar =='' " :src="studentProfile.avatar" width="150px"/>
+                      <img else :src="avatar" width="150px" />
                       <label>
-                        <input
-                          type="file"
-                          id="file"
-                          ref="file"
-                          v-on:change="handleFileUpload()"
-                          style="font-size: 15px"
-                        />
                       </label>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row mt-2">
                     <div class="col-md-10">
                       <label class="labels">Tên CV</label>
@@ -198,7 +191,6 @@ import VueNumeric from "vue-numeric";
 export default {
   data() {
     return {
-      id: [],
       avatar: "",
       cvName: "",
       name: "",
@@ -216,6 +208,7 @@ export default {
       customToolbar: [
         [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
       ],
+      studentProfile: [],
     };
   },
 
@@ -225,6 +218,9 @@ export default {
   },
 
   created() {
+    if (localStorage.getItem("studentProfile")) {
+      this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
+    }
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
@@ -246,6 +242,7 @@ export default {
         if (cv.name) {
           this.isCreated = true;
         }
+        this.avatar = cv.avatar;
         this.cvName = cv.cvName;
         this.name = cv.name;
         this.dob = cv.dob;
@@ -259,6 +256,7 @@ export default {
         this.workingForm = cv.workingForm;
       });
   },
+
   methods: {
     updateCV() {
       this.isError = false;
@@ -331,30 +329,6 @@ export default {
           if (status === 400) {
             this.isError = true;
           }
-        });
-    },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
-      var formData = new FormData();
-      formData.append("avatar", this.file);
-      axios
-        .post(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" + this.$route.query.id + "/upload-image",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
-        .then((response) => {
-          this.avatar = response;
-          console.log(response);
-          window.location.reload();
-        })
-        .catch((e) => {
-          console.log(e.response);
         });
     },
   },

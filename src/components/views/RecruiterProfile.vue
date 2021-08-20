@@ -28,9 +28,7 @@
         </div>
         <div class="d-flex flex-row">
           <router-link to="/recruiter-post-job">
-            <div class="btn btn-common">
-              Đăng việc làm
-            </div>
+            <div class="btn btn-common">Đăng việc làm</div>
           </router-link>
         </div>
         <div class="rounded p-lg-2 p-1" id="blue-background">
@@ -61,17 +59,6 @@
       </div>
       <div class="pl-lg-5 pt-lg-2 pt-md-1">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <!-- <li class="nav-item" role="presentation">
-            <a
-              href="#user"
-              class="nav-link active"
-              id="user-tab"
-              data-toggle="tab"
-              role="tab"
-            >
-              Quản lý hồ sơ
-            </a>
-          </li> -->
           <li class="nav-item" role="presentation">
             <a
               href="#companyIn4"
@@ -116,7 +103,17 @@
               <label class="th-label">Việc làm bị từ chối</label>
             </a>
           </li>
-          
+          <li class="nav-item" role="presentation">
+            <a
+              href="#findCV"
+              class="nav-link"
+              id="searchCV"
+              data-toggle="tab"
+              role="tab"
+            >
+              <label class="th-label">Tìm kiếm CV</label>
+            </a>
+          </li>
         </ul>
 
         <!--tab content-->
@@ -131,12 +128,16 @@
             <div class="container rounded-bottom bg-light">
               <div class="d-flex flex-row" v-if="!hasCompany">
                 <div>
-                  <router-link to="/company" class="btn btn-common"> Tạo mới công ty</router-link>
+                  <router-link to="/company" class="btn btn-common">
+                    Tạo mới công ty</router-link
+                  >
                 </div>
               </div>
               <div class="d-flex flex-row" v-if="hasCompany">
                 <div>
-                  <router-link to="/company" class="btn btn-common"> Cập nhật công ty</router-link>
+                  <router-link to="/company" class="btn btn-common">
+                    Cập nhật công ty</router-link
+                  >
                 </div>
               </div>
 
@@ -148,7 +149,12 @@
               <div class="row mt-2" v-if="hasCompany">
                 <div class="left">
                   <div class="col-md-12">
-                    <img :src="company.avatar" width="300" height="300" />
+                    <img
+                      :src="company.avatar"
+                      width="300"
+                      height="300"
+                      style="margin-bottom: 30px"
+                    />
                   </div>
                 </div>
                 <div class="right">
@@ -193,13 +199,15 @@
                             <table class="table table-hover mb-0">
                               <thead>
                                 <tr class="align-self-center">
-                                  <th>
+                                  <th style="text-align: left">
                                     <label class="th-label"
                                       >Tên công việc</label
                                     >
                                   </th>
                                   <th>
-                                    <label class="th-label">Ngày đăng tuyển</label>
+                                    <label class="th-label"
+                                      >Ngày đăng tuyển</label
+                                    >
                                   </th>
                                   <th>
                                     <label class="th-label">Ngày hết hạn</label>
@@ -212,7 +220,10 @@
                                   v-bind:key="index"
                                   v-bind:job="job"
                                 >
-                                  <td v-on:click="redirectToListCV(job.id)" style="text-align: left">
+                                  <td
+                                    v-on:click="redirectToListCV(job.id)"
+                                    style="text-align: left"
+                                  >
                                     <label class="td-label">{{
                                       job.name
                                     }}</label>
@@ -258,13 +269,18 @@
                             <table class="table table-hover mb-0">
                               <thead>
                                 <tr class="align-self-center">
-                                  <th>
+                                  <th style="text-align: left">
+                                    <label class="th-label">ID</label>
+                                  </th>
+                                  <th style="text-align: left">
                                     <label class="th-label"
                                       >Tên công việc</label
                                     >
                                   </th>
                                   <th>
-                                    <label class="th-label">Ngày đăng ký</label>
+                                    <label class="th-label"
+                                      >Ngày đăng tuyển</label
+                                    >
                                   </th>
                                   <th>
                                     <label class="th-label">Ngày hết hạn</label>
@@ -280,7 +296,10 @@
                                   v-bind:key="index"
                                   v-bind:job="job"
                                 >
-                                  <td  style="text-align: left">
+                                  <td style="text-align: left">
+                                    <label class="td-label">{{ job.id }}</label>
+                                  </td>
+                                  <td style="text-align: left">
                                     <label class="td-label">{{
                                       job.name
                                     }}</label>
@@ -297,19 +316,25 @@
                                   </td>
                                   <td>
                                     <div>
-                                      <button class="btn btn-common"
-                                        @click.prevent="modalConfirm(job.id)"
-                                        >Chỉnh sửa</button
+                                      <router-link
+                                        class="btn btn-warning"
+                                        :to="{
+                                          path: 'recruiter-edit-job',
+                                          query: { id: id },
+                                        }"
+                                        >Chỉnh sửa</router-link
                                       >
                                     </div>
                                   </td>
                                   <td>
                                     <div>
-                                      <button class="btn btn-common"
+                                      <button
+                                        class="btn btn-common"
                                         href=""
                                         @click.prevent="modalConfirm(job.id)"
-                                        >Xóa</button
                                       >
+                                        Xóa
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -323,7 +348,7 @@
                 </div>
               </div>
             </div>
-          </div>  
+          </div>
 
           <!-- job denied tab -->
           <div
@@ -343,16 +368,15 @@
                             <table class="table table-hover mb-0">
                               <thead>
                                 <tr class="align-self-center">
-                                  <th>
+                                  <th style="text-align: left">
                                     <label class="th-label"
                                       >Tên công việc</label
                                     >
                                   </th>
                                   <th>
-                                    <label class="th-label">Ngày đăng tuyển</label>
-                                  </th>
-                                  <th>
-                                    <label class="th-label">Ngày hết hạn</label>
+                                    <label class="th-label"
+                                      >Ngày đăng tuyển</label
+                                    >
                                   </th>
                                   <th>
                                     <label class="th-label"></label>
@@ -361,7 +385,7 @@
                               </thead>
                               <tbody>
                                 <tr
-                                  v-for="(job, index) in listDenied"
+                                  v-for="(job, index) in listJobDenied"
                                   v-bind:key="index"
                                   v-bind:job="job"
                                 >
@@ -376,26 +400,14 @@
                                     }}</label>
                                   </td>
                                   <td>
-                                    <label class="td-label">{{
-                                      job.endDate
-                                    }}</label>
-                                  </td>
-                                  <td>
                                     <div>
-                                      <button class="btn btn-common"
+                                      <button
+                                        class="btn btn-common"
                                         href=""
-                                        @click.prevent="modalConfirm(job.id)"
-                                        >Chỉnh sửa</button
+                                        @click.prevent="modalDetail(job.id)"
                                       >
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div>
-                                      <button class="btn btn-common"
-                                        href=""
-                                        @click.prevent="modalConfirm(job.id)"
-                                        >Lý do</button
-                                      >
+                                        Lý do
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -409,7 +421,85 @@
                 </div>
               </div>
             </div>
-          </div>           
+          </div>
+
+          <!-- search CV -->
+          <div
+            class="tab-pane fade"
+            id="findCV"
+            role="tabpanel"
+            aria-labelledby="searchCV"
+          >
+            <div class="container my-5">
+              <div class="col-lg-12 col-md-6 col-xs-12">
+                <div class="col-lg-3 col-md-6 col-xs-12">
+                  <label class="styled-select">
+                    <select v-model="workingForm">
+                      <option :value="null">Hình thức</option>
+                      <option :value="1">Full time</option>
+                      <option :value="2">Part time</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12">
+                  <label class="styled-select">
+                    <select v-model="workingForm">
+                      <option :value="null">Mức lương tối đa</option>
+                      <option :value="1">Dưới 1.000.000 VNĐ</option>
+                      <option :value="2">Dưới 3.000.000 VNĐ</option>
+                      <option :value="2">Dưới 5.000.000 VNĐ</option>
+                      <option :value="2">Dưới 7.000.000 VNĐ</option>
+                      <option :value="2">Dưới 10.000.000 VNĐ</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                  <thead>
+                    <tr class="align-self-center">
+                      <th style="text-align: left">
+                        <label class="th-label">Tên ứng viên</label>
+                      </th>
+                      <th>
+                        <label class="th-label">Giới tính</label>
+                      </th>
+                      <th>
+                        <label class="th-label"> Trường học</label>
+                      </th>
+                      <th>
+                        <label class="th-label"></label>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: left">
+                        <label class="td-label"> </label>
+                      </td>
+                      <td>
+                        <label class="td-label"> </label>
+                      </td>
+                      <td>
+                        <label class="td-label"> </label>
+                      </td>
+                      <td>
+                        <div>
+                          <button
+                            class="btn btn-common"
+                            href=""
+                            @click.prevent="modalDetail(job.id)"
+                          >
+                            Xem chi tiết
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -438,6 +528,32 @@
           </div>
         </div>
       </div>
+      <div
+        class="modal fade"
+        id="viewReason"
+        tabindex="-1"
+        aria-labelledby="saveJobMessageLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-content">
+              <div class="modal-body">
+                <ul
+                  v-for="(job, index) in listJobDenied"
+                  v-bind:key="index"
+                  v-bind:job="job"
+                >
+                  <li>Lý do việc làm bị xóa: {{ job.denyMessage }}</li>
+                </ul>
+                <button class="btn btn-common" data-bs-dismiss="modal">
+                  Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -458,18 +574,21 @@ export default {
       company: "",
       file: "",
       id_job_created: "",
+      id: [],
+      listJobDenied: [],
+      jobDenied: {
+        type: Object,
+        default: null,
+      },
     };
   },
   computed: {
     listApproved() {
-      return this.list.filter(job => job.status == 2)
+      return this.list.filter((job) => job.status == 2);
     },
     listPending() {
-      return this.list.filter(job => job.status == 1)
+      return this.list.filter((job) => job.status == 1);
     },
-    listDenied() {
-      return this.list.filter(job => job.status == 3)
-    }   
   },
   methods: {
     handleFileUpload() {
@@ -487,8 +606,7 @@ export default {
             },
           }
         )
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           window.location.reload();
         })
         .catch((e) => {
@@ -504,11 +622,16 @@ export default {
       return count;
     },
     redirectToListCV(id) {
-      this.$router.push({ path: "candidate-list", query: { id: id } });   
+      this.$router.push({ path: "candidate-list", query: { id: id } });
     },
     modalConfirm(id) {
       // eslint-disable-next-line no-undef
       $("#confirmDelete").modal("show");
+      this.id_job_created = id;
+    },
+    modalDetail(id) {
+      // eslint-disable-next-line no-undef
+      $("#viewReason").modal("show");
       this.id_job_created = id;
     },
     deleteJobCreated() {
@@ -551,7 +674,6 @@ export default {
       .then((response) => {
         if (response.data.data !== null) {
           this.list = response.data.data;
-          console.log(this.list);
         }
       });
     axios
@@ -570,6 +692,18 @@ export default {
         if (e.response.status === 404) {
           this.hasCompany = false;
         }
+      });
+    axios
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/denied-jobs",
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        this.listJobDenied = response.data.data;
       });
   },
 };

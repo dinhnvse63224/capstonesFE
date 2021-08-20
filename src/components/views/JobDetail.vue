@@ -182,18 +182,7 @@
                 <div class="col-md-12 mt-30 ov">
                   <label class="profile-title">Vui Lòng chọn cv bạn muốn nộp</label>
                   <div class="left list-cv">
-                    <button v-for="(cv, index) in listCV" v-bind:key="index" class="btn btn-light col-lg-12 col-md-12 col-xs-12" @click.prevent="applyJob(cv.id)">
-                      <!-- <div class="content">
-                        <h3>
-                          <a>{{ cv.cvName }}</a>
-                        </h3>
-                        <span class="full-time mb-3" v-if="cv.workingForm == 1"> Full time </span>
-                        <span class="part-time mb-3" v-if="cv.workingForm != 1"> Part time </span>
-                        <h6>
-                          Mức lương tối thiểu : {{ formatPrice(cv.desiredSalary) }} VNĐ
-                        </h6>
-                      </div> -->
-                      
+                    <button v-for="(cv, index) in listCV" v-bind:key="index" class="btn btn-light col-lg-12 col-md-12 col-xs-12" @click.prevent="applyJob(cv.id)">                      
                         <div class="card h-100 shadow-sm">
                           <div class="label-top shadow-sm">
                             {{ cv.cvName }}

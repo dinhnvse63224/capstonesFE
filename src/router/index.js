@@ -6,8 +6,8 @@ import Contact from '../components/views/Contact.vue'
 
 import StudentProfile from '../components/views/StudentProfile.vue'
 import StudentUpdateCV from '../components/views/StudentUpdateCV.vue'
-import CandidateList from  '../components/views/CandidateList.vue'
 import StudentDetailCV from "../components/views/StudentDetailCV"
+import StudentCreateCV from "../components/views/StudentCreateCV"
 
 import JobDetail from '../components/views/JobDetail.vue'
 
@@ -16,13 +16,13 @@ import RecruiterRegister from '../components/views/RecruiterRegister.vue'
 import RecruiterProfile from '../components/views/RecruiterProfile.vue'
 import RecruiterLogin from '../components/views/RecruiterLogin.vue'
 import RecruiterPostJob from '../components/views/RecruiterPostJob.vue'
-import StudentCreateCV from "../components/views/StudentCreateCV"
+import RecruiterEditJob from '../components/views/RecruiterEditJob.vue'
+import CandidateList from  '../components/views/CandidateList.vue'
 import RecruiterCompanyCreate from "../components/views/RecruiterCompanyCreateOrEdit"
 import RecruiterDetailCV from "../components/views/RecruiterDetailCV"
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import RecruiterProfileEdit from "../components/views/RecruiterProfileEdit";
 
 Vue.use(VueAxios,axios);
 Vue.use(VueRouter)
@@ -73,8 +73,8 @@ const router = new VueRouter({
       component: RecruiterPostJob,
     },
     {
-      path: '/recruiter-edit-profile',
-      component: RecruiterProfileEdit,
+      path: '/recruiter-edit-job',
+      component: RecruiterEditJob,
     },
     {
       path: '/candidate-list',
@@ -87,6 +87,10 @@ const router = new VueRouter({
     {
       path: '/create-cv',
       component: StudentCreateCV,
+    },
+    {
+      path: '/update-cv',
+      component: StudentUpdateCV,
     },
     {
       path: '/company',

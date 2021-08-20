@@ -26,7 +26,7 @@
                 <div class="d-flex flex-row">
                   <div>
                     <router-link
-                      :to="{ path: 'create-cv', query: { id: id } }"
+                      :to="{ path: 'update-cv', query: { id: id } }"
                       class="btn btn-common"
                     >
                       Cập nhật thông tin CV</router-link
@@ -82,7 +82,8 @@
                 </div>
                 <div class="col-md-12">
                   <label class="labels"
-                    >-Ngoại ngữ: {{ studentCv.foreignLanguage }}</label
+                    >-Ngoại ngữ: <span v-html="studentCv.foreignLanguage"></span
+                  ></label
                   >
                 </div>
                 <div class="col-md-12">
@@ -183,29 +184,6 @@ export default {
     formatPrice(value) {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
-      var formData = new FormData();
-      formData.append("avatar", this.file);
-      axios
-        .post(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/{cvId}/upload-image",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          window.location.reload();
-        })
-        .catch((e) => {
-          console.log(e.response);
-        });
     },
   },
 

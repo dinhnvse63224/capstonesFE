@@ -5,7 +5,7 @@
         <div class="row-form">
           <div class="col-lg-12">
             <div class="inner-header">
-              <h3>Tạo mới việc làm</h3>
+              <h3>Chỉnh sửa việc làm</h3>
             </div>
           </div>
         </div>
@@ -21,12 +21,12 @@
               <div class="col-lg-12 col-md-6 col-sm-12">
                 <div class="d-flex flex-row">
                   <div>
-                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a><br />
+                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a
+                    ><br />
                   </div>
                 </div>
               </div>
               <div class="col-lg-5 col-md-6 col-sm-12">
-
                 <div class="form-group">
                   <label for="first-name">Tên việc làm*</label
                   ><input
@@ -46,20 +46,25 @@
                 </div>
                 <div class="form-group">
                   <label for="time"> Mức Lương Tối Thiểu(VNĐ)*</label>
-                  <vue-numeric id="time" class="form-control" separator="," v-model="salaryMin"></vue-numeric>
+                  <vue-numeric
+                    id="time"
+                    class="form-control"
+                    separator=","
+                    v-model="salaryMin"
+                  ></vue-numeric>
                 </div>
-                  <label for="inputEmail4">Ngành nghề*</label>
-                  <multiselect
-                      v-model="multiCategory"
-                      :options="list"
-                      :multiple="true"
-                      :close-on-select="true"
-                      placeholder=""
-                      label="value"
-                      track-by="code"
-                      class="form-control w-auto"
-                  >
-                  </multiselect>
+                <label for="inputEmail4">Ngành nghề*</label>
+                <multiselect
+                  v-model="multiCategory"
+                  :options="list"
+                  :multiple="true"
+                  :close-on-select="true"
+                  placeholder=""
+                  label="value"
+                  track-by="code"
+                  class="form-control w-auto"
+                >
+                </multiselect>
                 <div class="form-group">
                   <label class="labels" for="sex">Yêu cầu giới tính*</label
                   ><br />
@@ -73,7 +78,6 @@
                     <option :value="2">Nữ</option>
                   </select>
                 </div>
-                
               </div>
               <div class="col-lg-5 col-md-6 col-sm-12">
                 <div class="form-group">
@@ -118,7 +122,12 @@
                 </div>
                 <div class="form-group">
                   <label for="time"> Mức Lương Tối Đa(VNĐ)*</label>
-                  <vue-numeric id="time" class="form-control" separator="," v-model="salaryMax"></vue-numeric>
+                  <vue-numeric
+                    id="time"
+                    class="form-control"
+                    separator=","
+                    v-model="salaryMax"
+                  ></vue-numeric>
                 </div>
                 <div class="form-group">
                   <label for="skill">Số người cần tuyển*</label>
@@ -143,7 +152,6 @@
                     <option :value="10">10 ngày - 200.000 VNĐ</option>
                     <option :value="20">15 ngày - 300.000 VNĐ</option>
                     <option :value="30">30 ngày - 500.000 VNĐ</option>
-
                   </select>
                 </div>
               </div>
@@ -154,7 +162,10 @@
                   <label for="exampleFormControlTextarea2"
                     >Mô tả công viêc*</label
                   >
-                  <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
+                  <vue-editor
+                    v-model="description"
+                    :editorToolbar="customToolbar"
+                  ></vue-editor>
                 </div>
               </div>
             </div>
@@ -164,7 +175,10 @@
                   <label for="exampleFormControlTextarea2"
                     >Yêu cầu công việc*</label
                   >
-                  <vue-editor v-model="requirement" :editorToolbar="customToolbar"></vue-editor>
+                  <vue-editor
+                    v-model="requirement"
+                    :editorToolbar="customToolbar"
+                  ></vue-editor>
                 </div>
               </div>
             </div>
@@ -172,7 +186,10 @@
               <div class="col-md-12 col-lg-10 col-12">
                 <div class="form-group">
                   <label for="exampleFormControlTextarea2">Quyền lợi*</label>
-                  <vue-editor v-model="offer" :editorToolbar="customToolbar"></vue-editor>
+                  <vue-editor
+                    v-model="offer"
+                    :editorToolbar="customToolbar"
+                  ></vue-editor>
                 </div>
                 <div class="mb-2 mt-4">
                   <div
@@ -186,23 +203,22 @@
                     <button
                       type="button"
                       class="btn btn-primary"
-                      @click.prevent="postJob"
+                      @click.prevent="editJob"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                     >
-                      Đăng tuyển
+                      {{ isCreated ? "Cập nhật" : "Tạo mới" }}
                     </button>
-                    
+                    <!-- Modal -->
                   </div>
-                  <!-- Modal -->
                   <!-- <div
                     class="modal fade"
                     id="exampleModal"
                     tabindex="-1"
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
-                  >
-                    <div class="modal-dialog">
+                  > -->
+                  <!-- <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel">
@@ -235,8 +251,8 @@
                           </button>
                         </div>
                       </div>
-                    </div>
-                  </div> -->
+                    </div> -->
+                  <!-- </div> -->
                 </div>
               </div>
             </div>
@@ -250,12 +266,24 @@
 <script>
 import axios from "axios";
 import { VueEditor } from "vue2-editor";
-import VueNumeric from 'vue-numeric';
-import Multiselect from 'vue-multiselect'
-
+import VueNumeric from "vue-numeric";
+import Multiselect from "vue-multiselect";
 export default {
   data() {
     return {
+      profile: "",
+      token: "",
+      list: [],
+      listJob: [],
+      job: {
+        type: Object,
+        default: null,
+      },
+      id_job_created: "",
+      jobDenied: {
+        type: Object,
+        default: null,
+      },
       name: "",
       workingForm: "",
       location: "",
@@ -268,39 +296,30 @@ export default {
       quantity: "",
       salaryMin: "",
       salaryMax: "",
-      list: [],
       categories: [],
       activeDays: "",
       multiCategory: [],
-      token: "",
       options: [
-        { name: 'Vue.js', language: 'JavaScript' },
-        { name: 'Rails', language: 'Ruby' },
-        { name: 'Sinatra', language: 'Ruby' },
-        { name: 'Laravel', language: 'PHP', $isDisabled: true }
+        { name: "Vue.js", language: "JavaScript" },
+        { name: "Rails", language: "Ruby" },
+        { name: "Sinatra", language: "Ruby" },
+        { name: "Laravel", language: "PHP", $isDisabled: true },
       ],
       customToolbar: [[{ list: "ordered" }, { list: "bullet" }]],
+      isCreated: false,
+      isError: false,
     };
   },
+
   components: {
     VueEditor,
     VueNumeric,
-    Multiselect
-  },
-
-  mounted() {
-    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
-      this.list = response.data.data;
-
-    });
-  },
-  computed: {
-    loadCategories() {
-      return this.categories.slice(',');
-    }
+    Multiselect,
   },
   methods: {
-    async postJob() {
+    editJob() {
+      this.isError = false;
+
       if (localStorage.getItem("token")) {
         this.token = localStorage.getItem("token");
       }
@@ -308,10 +327,14 @@ export default {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.token}`,
       };
+
       this.multiCategory.forEach((cate) => {
         this.categories.push(cate.code);
-      })
-      const data = {
+      });
+      let data = {};
+      if(this.isCreated) {
+        data = {
+            id: Number(this.$route.query.id),
         name: this.name,
         workingForm: this.workingForm,
         salaryMin: this.salaryMin,
@@ -326,18 +349,110 @@ export default {
         salaryMax: this.salaryMax,
         categories: this.categories,
         activeDays: this.activeDays,
-      };
-      console.log(data);
-      await console.log(data);
-      await axios
-        .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/create", data, {
-          headers: header,
+        };
+      } else {
+        data = {
+          name: this.name,
+        workingForm: this.workingForm,
+        salaryMin: this.salaryMin,
+        location: this.location,
+        workingPlace: this.workingPlace,
+        requirement: this.requirement,
+        type: true,
+        offer: this.offer,
+        sex: this.sex,
+        quantity: this.quantity,
+        description: this.description,
+        salaryMax: this.salaryMax,
+        categories: this.categories,
+        activeDays: this.activeDays,
+        };
+      }
+     console.log(data);
+      const response = this.isCreated
+        ? axios.put(
+            `http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/update`,
+            data,
+            {
+              headers: header,
+            }
+          )
+        : axios.post(
+            `http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/create`,
+            data,
+            {
+              headers: header,
+            }
+          );
+      response
+        .then(() => {
+          if (this.isCreated) {
+            this.$router.push("detail-job?id=" + this.$route.query.id);
+          } else {
+            this.$router.push("/recruiter-profile");
+            window.location.reload;
+          }
         })
-        .then(
-          this.$router.push('/recruiter-profile'),
-          window.location.reload()
-        );
+        .catch((e) => {
+          const { status } = e.response;
+          if (status === 400) {
+            this.isError = true;
+          }
+        });
     },
+  },
+  mounted() {
+    if (localStorage.getItem("recruiterProfile")) {
+      this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
+    }
+    if (localStorage.getItem("token")) {
+      this.token = localStorage.getItem("token");
+    }
+    axios
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories"
+      )
+      .then((response) => {
+        this.list = response.data.data;
+      });
+  },
+  created() {
+    if (localStorage.getItem("token")) {
+      this.token = localStorage.getItem("token");
+    }
+    const header = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${this.token}`,
+    };
+    axios
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" +
+          this.$route.query.id,
+        {
+          headers: header,
+        }
+      )
+      .then((response) => {
+        const job = response.data.data;
+        if (job.name) {
+          this.isCreated = true;
+        }
+        this.name = job.name;
+        this.workingForm = job.workingForm;
+        this.salaryMin = job.salaryMin;
+        this.location = job.location;
+        this.workingPlace = job.workingPlace;
+        this.requirement = job.requirement;
+        this.type = job.type;
+        this.offer = job.offer;
+        this.sex = job.sex;
+        this.quantity = job.quantity;
+        this.description = job.description;
+        this.categories = job.categories;
+        this.salaryMax = job.salaryMax;
+        this.activeDays = job.activeDays;
+        console.log(job);
+      });
   },
 };
 </script>

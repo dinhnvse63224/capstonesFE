@@ -14,40 +14,58 @@
     <div class="container border-bottom bg-white mt-1 pt-md-3 pt-2">
       <div class="container rounded-bottom bg-light">
         <div class="container h-100">
+          <div class="col-lg-12 col-md-6 col-sm-12">
+            <div class="d-flex flex-row">
+              <div>
+                <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a>
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="card-body text-center">
               <div class="card">
-                <div class="col-lg-12 col-md-6 col-sm-12">
-                <div class="d-flex flex-row">
-                  <div>
-                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a><br />
-                  </div>
-                </div>
-              </div>
                 <div class="col-md-12 py-md-4">
                   <div class="right">
                     <div class="table-responsive">
                       <table class="table table-hover mb-0">
                         <thead>
-                        <tr class="align-self-center">
-                          <th><span>Người ứng tuyển</span></th>
-                          <th><span>Ngày ứng tuyển</span></th>
-                          <th><span>Email</span></th>
-                        </tr>
+                          <tr class="align-self-center">
+                            <th></th>
+                            <th>
+                              <span class="th-label">Người ứng tuyển</span>
+                            </th>
+                            <th>
+                              <span class="th-label">Giới tính</span>
+                            </th>
+                            <th>
+                              <span class="th-label">Ngày ứng tuyển</span>
+                            </th>
+                            <th><span class="th-label">Email</span></th>
+                          </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(cv, index) in list" v-bind:key="index" v-on:click="redirectToDetailCV(index)">
-                          <td>
-                            <img v-if="cv.cv.avatar != ''" :src="cv.cv.avatar" alt="" width="200" height="200">
-                            <span class="user-subhead">{{ cv.cv.name }}</span>
-                          </td>
-                          <td>
-                            <span class="user-subhead"> 15/08/2021 </span> 
-                          </td>
-                          <td>
-                            <a href="#">{{ cv.gmail }}</a>
-                          </td>
-                        </tr>
+                          <tr
+                            v-for="(cv, index) in list"
+                            v-bind:key="index"
+                            v-on:click="redirectToDetailCV(index)"
+                          >
+                            <td style="text-align: left">
+                              <span  class="td-label"> {{ index + 1 }} </span>
+                            </td>
+                            <td>
+                              <span class="td-label">{{ cv.cv.name }}</span>
+                            </td>
+                            <td>
+                              <span v-if="cv.cv.sex = true" class="td-label">Nam</span>
+                              <span v-else class="td-label">Nữ</span>
+                            </td>
+                            <td>
+                              <span class="td-label"> 15/08/2021 </span>
+                            </td>
+                            <td>
+                              <span class="td-label">{{ cv.gmail }}</span>
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -75,7 +93,7 @@ export default {
       job: {
         type: Object,
         default: null,
-      }
+      },
     };
   },
   methods: {
@@ -88,30 +106,41 @@ export default {
       return count;
     },
     redirectToDetailCV(key) {
-      this.$router.push({ path: 'recruiter-detail-cv', query: { id: this.$route.query.id, key: key } })
-    }
+      let routeData = this.$router.resolve({
+        path: "recruiter-detail-cv",
+        query: { id: this.$route.query.id, key: key },
+      });
+      window.open(routeData.href, "_blank");
+
+      // this.$router.push({
+      //   path: "recruiter-detail-cv",
+      //   query: { id: this.$route.query.id, key: key },
+      // });
+    },
   },
   mounted() {
     this.id = this.$route.query.id;
     if (localStorage.getItem("recruiterProfile")) {
       this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
-
     }
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
 
-     axios
-        .get(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" + this.$route.query.id + "/applied-students",
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        ).then((response) => {
-       this.list = response.data.data;
-     })
+    axios
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" +
+          this.$route.query.id +
+          "/applied-students",
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        this.list = response.data.data;
+      });
   },
 };
 </script>
@@ -285,5 +314,14 @@ a.list-group-item,
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.th-label {
+  font-size: 18px;
+}
+
+.td-label {
+  font-size: 16px;
+  margin: 20px 0px 20px 0px;
 }
 </style>
