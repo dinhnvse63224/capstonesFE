@@ -5,19 +5,24 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-6 col-xs-12">
-            <div class="breadcrumb-wrapper">           
+            <div class="breadcrumb-wrapper">
               <div class="content">
                 <h3 class="job-title">{{ job.name }}</h3>
                 <p class="brand"></p>
                 <div class="tags">
                   <span
-                    ><i class="lni-map-marker"></i><label class="job-label"> {{ job.workingPlace }} </label></span
-                  ><br>
+                    ><i class="lni-map-marker"></i
+                    ><label class="job-label">
+                      {{ job.workingPlace }}
+                    </label></span
+                  ><br />
                   <span
-                    ><i class="lni-calendar"></i> Ngày tạo: <label class="job-label">{{ job.createDate }}</label>
-                  </span><br>
+                    ><i class="lni-calendar"></i> Ngày tạo:
+                    <label class="job-label">{{ job.createDate }}</label> </span
+                  ><br />
                   <span
-                    ><i class="lni-calendar"></i> Ngày hết hạn: <label class="job-label">{{ job.endDate }}</label>
+                    ><i class="lni-calendar"></i> Ngày hết hạn:
+                    <label class="job-label">{{ job.endDate }}</label>
                   </span>
                 </div>
               </div>
@@ -30,6 +35,9 @@
 
     <!-- Job Detail Section Start -->
     <section class="job-detail section">
+      <div class="d-flex flex-row">
+        <div><a href="#" @click="$router.go(-1)">Trở về </a><br /></div>
+      </div>
       <div class="container">
         <div class="row justify-content-between">
           <div class="col-lg-7 col-md-12 col-xs-12">
@@ -47,17 +55,15 @@
             <div class="sideber">
               <div class="widghet" v-if="!isShowInfo">
                 <h3>THÔNG TIN TUYỂN DỤNG</h3>
-                <button
-                    @click.prevent="details"
-                    class="btn btn-common log-btn"
-                >
+                <button @click.prevent="details" class="btn btn-common log-btn">
                   Chi tiết
                 </button>
               </div>
               <div class="widghet" v-if="isShowInfo">
                 <h3>THÔNG TIN TUYỂN DỤNG</h3>
                 <li>
-                  Mức lương: {{ formatPrice(job.salaryMin) }} VNĐ - {{ formatPrice(job.salaryMax) }} VNĐ
+                  Mức lương: {{ formatPrice(job.salaryMin) }} VNĐ -
+                  {{ formatPrice(job.salaryMax) }} VNĐ
                 </li>
                 <br />
                 <li v-if="job.workingForm == 1">
@@ -74,18 +80,10 @@
             </div>
           </div>
         </div>
-        <button
-          type="button"
-          class="btn btn-common"
-          @click.prevent="chooseCV"
-        >
+        <button type="button" class="btn btn-common" @click.prevent="chooseCV">
           Nộp đơn
         </button>
-        <button
-            type="button"
-            class="btn btn-common"
-            @click.prevent="saveJob"
-        >
+        <button type="button" class="btn btn-common" @click.prevent="saveJob">
           Lưu việc
         </button>
         <div
@@ -107,7 +105,10 @@
               </div>
               <div class="modal-body">
                 <ul class="body-desc">
-                  <li>Nộp đơn thành công. Vui lòng chờ phản hồi qua từ nhà tuyển dụng.</li>
+                  <li>
+                    Nộp đơn thành công. Vui lòng chờ phản hồi qua từ nhà tuyển
+                    dụng.
+                  </li>
                 </ul>
                 <button
                   @click.prevent="accept"
@@ -121,22 +122,22 @@
           </div>
         </div>
         <div
-            class="modal fade"
-            id="saveJobMessage"
-            tabindex="-1"
-            aria-labelledby="saveJobMessageLabel"
-            aria-hidden="true"
+          class="modal fade"
+          id="saveJobMessage"
+          tabindex="-1"
+          aria-labelledby="saveJobMessageLabel"
+          aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-body">
                 <ul class="body-desc">
-                  <li>Lưu việc thành công. Vui lòng kiểm tra trong danh sách đã lưu.</li>
+                  <li>
+                    Lưu việc thành công. Vui lòng kiểm tra trong danh sách đã
+                    lưu.
+                  </li>
                 </ul>
-                <button
-                    class="btn btn-common"
-                    data-bs-dismiss="modal"
-                >
+                <button class="btn btn-common" data-bs-dismiss="modal">
                   Xác nhận
                 </button>
               </div>
@@ -144,11 +145,11 @@
           </div>
         </div>
         <div
-            class="modal fade"
-            id="noCV"
-            tabindex="-1"
-            aria-labelledby="saveJobMessageLabel"
-            aria-hidden="true"
+          class="modal fade"
+          id="noCV"
+          tabindex="-1"
+          aria-labelledby="saveJobMessageLabel"
+          aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
@@ -156,10 +157,7 @@
                 <ul class="body-desc">
                   <li>Bạn chưa có CV nào. Hãy tạo CV mới ở trang hồ sơ</li>
                 </ul>
-                <button
-                    class="btn btn-common"
-                    data-bs-dismiss="modal"
-                >
+                <button class="btn btn-common" data-bs-dismiss="modal">
                   Xác nhận
                 </button>
               </div>
@@ -167,50 +165,51 @@
           </div>
         </div>
         <div
-            class="modal fade"
-            id="chooseCV"
-            tabindex="-1"
-            aria-labelledby="saveJobMessageLabel"
-            aria-hidden="true"
+          class="modal fade"
+          id="chooseCV"
+          tabindex="-1"
+          aria-labelledby="saveJobMessageLabel"
+          aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-body">
                 <div class="col-md-12 mt-30 ov">
-                  <label class="profile-title">Vui Lòng chọn cv bạn muốn nộp</label>
+                  <label class="profile-title"
+                    >Vui Lòng chọn cv bạn muốn nộp</label
+                  >
                   <div class="left list-cv">
-                    <button v-for="(cv, index) in listCV" v-bind:key="index" class="btn btn-light col-lg-12 col-md-12 col-xs-12" @click.prevent="applyJob(cv.id)">                      
-                        <div class="card h-100 shadow-sm">
-                          <div class="label-top shadow-sm">
-                            {{ cv.cvName }}
-                          </div>
-                          <div class="card-body">
-                            <label class="label" v-if="cv.workingForm == 1">
-                              Hình thức: Full Time
-                            </label>
-                            <label class="label" v-else>
-                              Hình thức: Part Time
-                            </label><br>
-                            <label class="label">
-                              Mức lương:
-                              {{ formatPrice(cv.desiredSalary) }} VNĐ
-                            </label>
-                          </div>                     
-                  </div>
+                    <button
+                      v-for="(cv, index) in listCV"
+                      v-bind:key="index"
+                      class="btn btn-light col-lg-12 col-md-12 col-xs-12"
+                      @click.prevent="applyJob(cv.id)"
+                    >
+                      <div class="card h-100 shadow-sm">
+                        <div class="label-top shadow-sm">
+                          {{ cv.cvName }}
+                        </div>
+                        <div class="card-body">
+                          <label class="label" v-if="cv.workingForm == 1">
+                            Hình thức: Full Time
+                          </label>
+                          <label class="label" v-else>
+                            Hình thức: Part Time </label
+                          ><br />
+                          <label class="label">
+                            Mức lương:
+                            {{ formatPrice(cv.desiredSalary) }} VNĐ
+                          </label>
+                        </div>
+                      </div>
                     </button>
                   </div>
                 </div>
                 <div class="mt-5">
-                  <button
-                      class="btn btn-common"
-                      @click.prevent="accept"
-                  >
+                  <button class="btn btn-common" @click.prevent="accept">
                     Xác nhận
                   </button>
-                  <button
-                      class="btn btn-common"
-                      data-bs-dismiss="modal"
-                  >
+                  <button class="btn btn-common" data-bs-dismiss="modal">
                     Huỷ bỏ
                   </button>
                 </div>
@@ -227,7 +226,7 @@
         <div class="section-header">
           <h2 class="section-title">VIỆC LÀM TƯƠNG TỰ</h2>
         </div>
-        <ListJob v-bind:list="jobSimilar" />
+        <ListJob v-bind:list="list" />
       </div>
     </section>
     <!-- Featured Section End -->
@@ -250,7 +249,7 @@ export default {
       isShowInfo: false,
       token: "",
       listCV: [],
-      jobSimilar: []
+      list: [],
     };
   },
   components: {
@@ -260,46 +259,58 @@ export default {
     if (localStorage.getItem("studentProfile")) {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
     }
-    this.token = localStorage.getItem("token")
+    this.token = localStorage.getItem("token");
     if (this.token) {
       this.isShowInfo = true;
     }
 
     axios
-        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/self", {
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/self",
+        {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
-        })
-        .then((response) => {
-          if (response.data.data !== null) {
-            this.listCV = response.data.data.listCv;
-          }
-        });
+        }
+      )
+      .then((response) => {
+        if (response.data.data !== null) {
+          this.listCV = response.data.data.listCv;
+        }
+      });
 
     axios
-      .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" + this.$route.query.id)
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" +
+          this.$route.query.id
+      )
       .then((response) => {
         this.job = response.data.data;
       });
 
     axios
-        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/suggest", {
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/suggest",
+        {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
-        })
-        .then((response) => {
-          if (response.data.data.length >= 2) {
-            this.jobSuggest = [response.data.data[0], response.data.data[1]]
-          } else {
-            this.jobSuggest = response.data.data;
-          }
-        });
-    axios
-      .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/similar-jobs/" + this.$route.query.id)
+        }
+      )
       .then((response) => {
-        this.jobSimilar = response.data.data;
+        if (response.data.data.length >= 2) {
+          this.jobSuggest = [response.data.data[0], response.data.data[1]];
+        } else {
+          this.jobSuggest = response.data.data;
+        }
+      });
+    axios
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/similar-jobs/" +
+          this.$route.query.id
+      )
+      .then((response) => {
+        this.list = response.data.data;
         console.log(this.jobSimilar);
       });
   },
@@ -325,9 +336,13 @@ export default {
           cvId: Number(idCV),
         };
         axios
-          .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/apply", data, {
-            headers: header,
-          })
+          .post(
+            "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/apply",
+            data,
+            {
+              headers: header,
+            }
+          )
           .then(() => {
             // eslint-disable-next-line no-undef
             $("#chooseCV").modal("hide");
@@ -335,8 +350,8 @@ export default {
             $("#exampleModal").modal("show");
           })
           .catch((e) => {
-            const { message } = e.response.data; 
-              alert(message.toString());
+            const { message } = e.response.data;
+            alert(message.toString());
           });
       } else {
         alert("Bạn cần đăng nhập để nộp đơn!");
@@ -352,17 +367,21 @@ export default {
           jobId: Number(this.$route.query.id),
         };
         axios
-            .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/save", data, {
+          .post(
+            "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/save",
+            data,
+            {
               headers: header,
-            })
-            .then(() => {
-              // eslint-disable-next-line no-undef
-              $("#saveJobMessage").modal("show");
-            })
-            .catch((e) => {
-              const { message } = e.response.data;
-              alert(message.toString());
-            });
+            }
+          )
+          .then(() => {
+            // eslint-disable-next-line no-undef
+            $("#saveJobMessage").modal("show");
+          })
+          .catch((e) => {
+            const { message } = e.response.data;
+            alert(message.toString());
+          });
       } else {
         alert("Bạn cần đăng nhập để nộp đơn!");
       }
@@ -371,9 +390,9 @@ export default {
       alert("Bạn cần đăng nhập để xem thông tin chi tiết");
     },
     formatPrice(value) {
-        let val = (value/1).toFixed(0).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    }
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
   },
 };
 </script>

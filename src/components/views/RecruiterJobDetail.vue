@@ -34,11 +34,10 @@
     <!-- Page Header End -->
     <section class="job-detail section">
       <div class="d-flex flex-row">
-                  <div>
-                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a
-                    ><br />
-                  </div>
-                </div>
+        <div style="margin left: 50px">
+          <a href="#" @click="$router.go(-1)">Trở về</a><br />
+        </div>
+      </div>
       <div class="container">
         <div class="row justify-content-between">
           <div class="col-lg-7 col-md-12 col-xs-12">

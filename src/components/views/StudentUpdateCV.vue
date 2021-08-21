@@ -12,18 +12,22 @@
       </div>
     </div>
     <form>
+      <div class="col-lg-12">
+        <a href="#" @click="$router.go(-1)"> Trở về</a>
+      </div>
       <div class="row justify-content-center round">
         <div class="col-lg-10 col-md-12">
           <div class="card shadow-lg card-1">
             <div class="card-body inner-card">
               <div class="row justify-content-center">
-                <div class="col-lg-12">
-                  <a href="#" @click="$router.go(-1)"> Trở về trang cá nhân</a>
-                </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                   <div class="row mt-2">
-                    <div class="col-md-12" >
-                      <img v-if="avatar =='' " :src="studentProfile.avatar" width="150px"/>
+                    <div class="col-md-12">
+                      <img
+                        v-if="avatar == ''"
+                        :src="studentProfile.avatar"
+                        width="150px"
+                      />
                       <img else :src="avatar" width="150px" />
                       <label>
                         <input
@@ -128,6 +132,7 @@
                       </select>
                     </div>
                   </div>
+                  
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                   <div class="row mt-3">
@@ -170,16 +175,16 @@
                     Vui lòng điền đủ các thông tin.
                   </div>
                 </div>
-              <div class="col-lg-5 col-md-6 col-sm-12">
-                <div class="mt-5 text-center">
-                  <button
-                    @click.prevent="updateCV"
-                    class="btn btn-common"
-                    type="btn btn-common log-btn"
-                  >
-                    {{ isCreated ? "Cập nhật" : "Tạo mới" }}
-                  </button>
-                </div>
+                <div class="col-lg-5 col-md-6 col-sm-12">
+                  <div class="mt-5 text-center">
+                    <button
+                      @click.prevent="updateCV"
+                      class="btn btn-common"
+                      type="btn btn-common log-btn"
+                    >
+                      {{ isCreated ? "Cập nhật" : "Tạo mới" }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -212,10 +217,9 @@ export default {
       workingForm: "",
       isError: false,
       isCreated: false,
-      customToolbar: [
-        [{ list: "ordered" }, { list: "bullet" },]
-      ],
+      customToolbar: [[{ list: "ordered" }, { list: "bullet" }]],
       studentProfile: [],
+      isPublic: ""
     };
   },
 
@@ -260,6 +264,7 @@ export default {
         this.foreignLanguage = cv.foreignLanguage;
         this.desiredSalaryMinimum = cv.desiredSalaryMinimum;
         this.workingForm = cv.workingForm;
+        this.isPublic = cv.isPublic
       });
   },
 
@@ -289,6 +294,7 @@ export default {
           foreignLanguage: this.foreignLanguage,
           desiredSalaryMinimum: this.desiredSalaryMinimum,
           workingForm: this.workingForm,
+          isPublic: this.isPublic,
         };
       } else {
         data = {
@@ -303,6 +309,7 @@ export default {
           foreignLanguage: this.foreignLanguage,
           desiredSalaryMinimum: this.desiredSalaryMinimum,
           workingForm: this.workingForm,
+          isPublic: this.isPublic
         };
       }
       console.log(data);
@@ -343,7 +350,9 @@ export default {
       formData.append("avatar", this.file);
       axios
         .post(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" + this.$route.query.id + "/upload-image",
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" +
+            this.$route.query.id +
+            "/upload-image",
           formData,
           {
             headers: {

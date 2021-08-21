@@ -14,8 +14,7 @@
     <div class="container border-bottom bg-white mt-1 pt-md-3 pt-2">
       <div class="d-flex flex-md-row justify-content-around align-items-center">
         <div class="d-flex flex-md-row align-items-center">
-          <div class="p-md-2">
-          </div>
+          <div class="p-md-2"></div>
           <div class="p-md-2 p-1" id="info">
             <h5>{{ profile.gmail }}</h5>
           </div>
@@ -308,7 +307,8 @@
                                         class="btn btn-warning"
                                         :to="{
                                           path: 'recruiter-job-detail',
-                                          query: { id: job.id }}"
+                                          query: { id: job.id },
+                                        }"
                                         >Xem trước</router-link
                                       >
                                     </div>
@@ -407,35 +407,29 @@
             aria-labelledby="searchCV"
           >
             <div class="container my-5">
-              <div class="col-lg-12 col-md-6 col-xs-12">
-                <div class="col-lg-3 col-md-6 col-xs-12">
-                  <label class="styled-select">
-                    <select
-                      v-model="workingForm"
-                    >
-                      <option :value="null">Hình thức</option>
-                      <option :value="1">Full time</option>
-                      <option :value="2">Part time</option>
-                    </select>
-                  </label>
+              <div class="row">
+                <div class="form-group">
+                  <label for="inputEmail4">Hình thức*</label>
+                  <select v-model="workingForm" class="form-control">
+                    <option :value="1">Full time</option>
+                    <option :value="2">Part time</option>
+                  </select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
-                  <label class="styled-select">
-                    <select v-model="salary">
-                      <option :value="null">Mức lương tối đa</option>
+                  <div class="form-group">
+                    <label for="inputEmail4">Mức lương</label>
+                    <select v-model="salary" class="form-control">
                       <option :value="1000000">Dưới 1.000.000 VNĐ</option>
                       <option :value="3000000">Dưới 3.000.000 VNĐ</option>
                       <option :value="5000000">Dưới 5.000.000 VNĐ</option>
                       <option :value="7000000">Dưới 7.000.000 VNĐ</option>
                       <option :value="10000000">Dưới 10.000.000 VNĐ</option>
                     </select>
-                  </label>
+                  </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-xs-12">
-                      <button @click="searchCV" class="button">
-                        <i class="lni-search"></i>
-                      </button>
-                    </div>
+                <div class="form-group">
+                <div class="btn btn-common" @click="searchCV">Tìm kiếm</div>
+                </div>
               </div>
               <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -456,28 +450,33 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(cv, index) in allCV"
-                                  v-bind:key="index"
-                                  v-bind:cv="cv">
+                    <tr
+                      v-for="(cv, index) in allCV"
+                      v-bind:key="index"
+                      v-bind:cv="cv"
+                    >
                       <td style="text-align: left">
-                        <label class="td-label"> {{cv.name}} </label>
+                        <label class="td-label"> {{ cv.name }} </label>
                       </td>
                       <td>
-                        <label v-if="cv.sex = true" class="td-label"> Nam </label>
+                        <label v-if="(cv.sex = true)" class="td-label">
+                          Nam
+                        </label>
                         <label v-else class="td-label"> Nữ </label>
                       </td>
                       <td>
-                        <label class="td-label"> {{cv.school}} </label>
+                        <label class="td-label"> {{ cv.school }} </label>
                       </td>
                       <td>
                         <div>
-                          <button
-                            class="btn btn-common"
-                            href=""
-                            @click.prevent="modalDetail(job.id)"
-                          >
-                            Xem chi tiết
-                          </button>
+                          <router-link
+                                class="btn btn-warning"
+                                :to="{
+                                  path: 'recruiter-detail-cv',
+                                  query: { id: cv.id },
+                                }"
+                                >Chi tiết</router-link
+                              >
                         </div>
                       </td>
                     </tr>
@@ -548,7 +547,7 @@
                   v-bind:key="index"
                   v-bind:job="job"
                 >
-                  <li> {{ job.denyMessage }}</li>
+                  <li>{{ job.denyMessage }}</li>
                 </ul>
                 <button class="btn btn-common" data-bs-dismiss="modal">
                   Đóng
@@ -594,7 +593,7 @@ export default {
       cv: {
         type: Object,
         default: null,
-      }
+      },
     };
   },
   computed: {
@@ -753,24 +752,24 @@ export default {
         this.listJobDenied = response.data.data;
       });
     let data = {
-        workingForm: this.workingForm,
-        salary: this.salary,
-      };
-      await axios
-        .post(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs/total-pages",
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        )
-        .then((response) => {
-          this.allCV = response.data.data;
-          this.pageCount = Math.ceil(this.allJob.length / 2);
-          this.listCV = this.paginate(this.allJob, 2, 1);
-        });
+      workingForm: this.workingForm,
+      salary: this.salary,
+    };
+    await axios
+      .post(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs/total-pages",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        this.allCV = response.data.data;
+        this.pageCount = Math.ceil(this.allJob.length / 2);
+        this.listCV = this.paginate(this.allJob, 2, 1);
+      });
   },
   components: {
     Paginate,

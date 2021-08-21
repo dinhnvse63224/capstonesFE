@@ -31,6 +31,18 @@
                       v-model="username"
                     />
                   </div>
+                  <!-- Show username error -->
+                  <div v-if="error_username.length > 0">
+                    <ul>
+                      <li
+                        v-for="item in error_username"
+                        v-bind:key="item"
+                        style="color: red"
+                      >
+                        {{ item }}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 <div class="form-group">
                   <div class="input-icon">
@@ -41,6 +53,18 @@
                       placeholder="Mật khẩu"
                       v-model="password"
                     />
+                  </div>
+                  <!-- Check password empty -->
+                  <div v-if="error_password.length > 0">
+                    <ul>
+                      <li
+                        v-for="item in error_password"
+                        v-bind:key="item"
+                        style="color: red"
+                      >
+                        {{ item }}
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div class="form-group form-check">
@@ -86,6 +110,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -94,51 +119,74 @@ export default {
       grant_type: "",
       token: "",
       recruiter: {},
+      error_username: [],
+      error_password: [],
     };
   },
   methods: {
     async recruiterLogin() {
-      var querystring = require("querystring");
-      await axios
-        .post(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/token?role=recruiter",
-          querystring.stringify({
-            username: this.username,
-            password: this.password,
-            grant_type: "password",
-          }),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        )
-        .then((response) => {
-          const tokenStr = response.data.access_token;
-          localStorage.setItem("token", tokenStr)
-          localStorage.setItem("userLogin", "recruiter")
-          axios
-            .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/self", {
+      if (this.username && this.password) {
+        var querystring = require("querystring");
+        await axios
+          .post(
+            "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/token?role=recruiter",
+            querystring.stringify({
+              username: this.username,
+              password: this.password,
+              grant_type: "password",
+            }),
+            {
               headers: {
-                Authorization: `Bearer ${tokenStr}`,
+                "Content-Type": "application/x-www-form-urlencoded",
               },
-              
-            })
-            .then((response) =>
-              localStorage.setItem(
-                "recruiterProfile",
-                JSON.stringify(response.data.data)
-              ),
-            )
-            .then(() => {
-              const path = `/recruiter-profile`;
-              if (this.$route.path !== path) this.$router.push(path);
-              window.location.reload();
+            }
+          )
+          .then((response) => {
+            const tokenStr = response.data.access_token;
+            localStorage.setItem("token", tokenStr);
+            localStorage.setItem("userLogin", "recruiter");
+            axios
+              .get(
+                "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/self",
+                {
+                  headers: {
+                    Authorization: `Bearer ${tokenStr}`,
+                  },
+                }
+              )
+              .then((response) =>
+                localStorage.setItem(
+                  "recruiterProfile",
+                  JSON.stringify(response.data.data)
+                )
+              )
+              .then(() => {
+                const path = `/recruiter-profile`;
+                if (this.$route.path !== path) this.$router.push(path);
+                window.location.reload();
+              });
+          })
+          .catch((error) => {
+            console.log(error.response);
+            Swal.fire({
+              title: "Đăng nhập thất bại",
+              text: "Tên tài khoản hoặc mật khẩu không chính xác",
+              icon: "error",
+              timer: 1800,
             });
-        })
-        .catch((error) => {
-          window.alert(error);
-        });
+          });
+      } else {
+        this.error_username = [];
+        this.error_password = [];
+
+        if (this.username.length <= 6) {
+          this.error_username.push("Tên tài khoản phải từ 6 ký tự trở lên");
+        }
+
+        if (this.password.length <= 6) {
+          this.error_password.push("Mật khẩu phải từ 6 ký tự trở lên");
+        }
+      }
     },
   },
 };

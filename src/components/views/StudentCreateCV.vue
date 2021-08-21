@@ -12,14 +12,14 @@
       </div>
     </div>
     <form>
+      <div>
+        <a href="#" @click="$router.go(-1)"> Trở về</a>
+      </div>
       <div class="row justify-content-center round">
         <div class="col-lg-10 col-md-12">
           <div class="card shadow-lg card-1">
             <div class="card-body inner-card">
               <div class="row justify-content-center">
-                <div class="col-lg-12">
-                  <a href="#" @click="$router.go(-1)"> Trở về trang cá nhân</a>
-                </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                   <!-- <div class="row mt-2">
                     <div class="col-md-12" >
@@ -37,6 +37,18 @@
                         class="form-control"
                         v-model="cvName"
                       />
+                      <!--Show error cvName-->
+                      <div v-if="error_cvName.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_cvName"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-2">
@@ -45,6 +57,18 @@
                         ><span style="color: red">*</span>Họ và Tên</label
                       >
                       <input type="text" class="form-control" v-model="name" />
+                      <!--Show error name-->
+                      <div v-if="error_name.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_name"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-3">
@@ -55,10 +79,22 @@
                       >
                       <input
                         type="text"
-                        placeholder="yyyy/mm/dd"
+                        placeholder="yyyy-mm-dd"
                         class="form-control"
                         v-model="dob"
                       />
+                      <!--Show error dob-->
+                      <div v-if="error_dob.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_dob"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                     <div class="col-md-3">
                       <label class="labels" for="sex"
@@ -81,6 +117,18 @@
                         ><span style="color: red">*</span>Số điện thoại</label
                       >
                       <input type="text" class="form-control" v-model="phone" />
+                      <!--Show error phone-->
+                      <div v-if="error_phone.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_phone"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-3">
@@ -93,6 +141,18 @@
                         class="form-control"
                         v-model="school"
                       />
+                      <!--Show error school-->
+                      <div v-if="error_school.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_school"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
 
@@ -107,6 +167,18 @@
                         separator=","
                         v-model="desiredSalaryMinimum"
                       ></vue-numeric>
+                      <!--Show error Salary Minimum-->
+                      <div v-if="error_salaryMinimum.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_salaryMinimum"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-3">
@@ -119,6 +191,18 @@
                         <option :value="1">Full time</option>
                         <option :value="2">Part time</option>
                       </select>
+                      <!-- Show working form error -->
+                      <div v-if="error_workingForm.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_workingForm"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -126,7 +210,7 @@
                   <div class="row mt-3">
                     <div class="col-md-10">
                       <label class="labels"
-                        ><span style="color: red">*</span>Ngoại ngữ</label
+                        >Ngoại ngữ</label
                       >
                       <vue-editor
                         v-model="foreignLanguage"
@@ -137,7 +221,7 @@
                   <div class="row mt-3">
                     <div class="col-md-10">
                       <label class="labels"
-                        ><span style="color: red">*</span>Kỹ năng</label
+                        >Kỹ năng</label
                       >
                       <vue-editor
                         v-model="skill"
@@ -148,7 +232,7 @@
                   <div class="row mt-3">
                     <div class="col-md-10">
                       <label class="labels"
-                        ><span style="color: red">*</span>Kinh nghiệm</label
+                        >Kinh nghiệm</label
                       >
                       <vue-editor
                         v-model="experience"
@@ -163,16 +247,16 @@
                     Vui lòng điền đủ các thông tin.
                   </div>
                 </div>
-              <div class="col-lg-5 col-md-6 col-sm-12">
-                <div class="mt-5 text-center">
-                  <button
-                    @click.prevent="updateCV"
-                    class="btn btn-common"
-                    type="btn btn-common log-btn"
-                  >
-                    {{ isCreated ? "Cập nhật" : "Tạo mới" }}
-                  </button>
-                </div>
+                <div class="col-lg-5 col-md-6 col-sm-12">
+                  <div class="mt-5 text-center">
+                    <button
+                      @click.prevent="updateCV"
+                      class="btn btn-common"
+                      type="btn btn-common log-btn"
+                    >
+                      {{ isCreated ? "Cập nhật" : "Tạo mới" }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -188,6 +272,8 @@ import axios from "axios";
 import moment from "moment";
 import { VueEditor } from "vue2-editor";
 import VueNumeric from "vue-numeric";
+
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -209,6 +295,13 @@ export default {
         [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
       ],
       studentProfile: [],
+
+      error_cvName: [],
+      error_name: [],
+      error_dob: [],
+      error_salaryMinimum: [],
+      error_school: [],
+      error_phone: [],
     };
   },
 
@@ -320,18 +413,87 @@ export default {
           if (this.isCreated) {
             this.$router.push("detail-cv?id=" + this.$route.query.id);
           } else {
+            Swal.fire({
+              title: "Thành công",
+              text: "Tạo Cv thành công",
+              icon: "success",
+              timer: 1800,
+            });
             this.$router.push("/student-profile");
             window.location.reload;
           }
         })
         .catch((e) => {
+          (this.error_cvName = []),
+            (this.error_name = []),
+            (this.error_dob = []),
+            (this.error_salaryMinimum = []),
+            (this.error_school = []),
+            (this.error_phone = []),
+            console.log(e.response.data);
           const { status } = e.response;
           if (status === 400) {
-            this.isError = true;
+            /*  this.isError = true; */
+            /*Check date of birth*/
+            if (this.school.length <= 0) {
+              this.error_school.push("Trường học không để trống");
+            }
+            if (this.phone.length <= 0) {
+              this.error_phone.push("Số điện thoại không để trống");
+            }
+            if (this.desiredSalaryMinimum.length <= 0) {
+              this.error_salaryMinimum.push("Mức lương mong muốn không để trống");
+            }
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.dob"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") == "Phải trên 18 tuổi"
+            ) {
+              this.error_dob.push("Bạn chưa đủ tuổi");
+            }
+            /*Check Cv name*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.cvName"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") == "Tên CV không được thiếu"
+            ) {
+              this.error_cvName.push("Tên Cv không được thiếu");
+            }
+            /*Check salary minimum*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState[
+                  "dto.desiredSalaryMinimum"
+                ][0].toString()
+              ).replace(/^"(.*)"$/, "$1") == "Giá trị nhỏ nhất là 1"
+            ) {
+              this.error_salaryMinimum.push("Mức lương mong muốn lớn hơn 1");
+            }
+            /*Check name*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.name"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") == "Tên không được thiếu"
+            ) {
+              this.error_name.push("Họ và tên không được để trống");
+            }
+            /*Check phone number*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.phone"][1].toString()
+              ).replace(/^"(.*)"$/, "$1") == "SĐT không được thiếu" &&
+              JSON.stringify(
+                e.response.data.modelState["dto.phone"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") ==
+                "SĐT chỉ chứa số và không quá 12 số"
+            ) {
+              this.error_phone.push(
+                "Số điện thoại chỉ chứa số và từ 8 - 12 số"
+              );
+            }
           }
         });
     },
-
   },
 };
 </script>

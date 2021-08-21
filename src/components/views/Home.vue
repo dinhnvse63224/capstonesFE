@@ -121,8 +121,8 @@
       </div>
 
       <!-- pagination -->
-      <center>
-        <div class="pagination_rounded">
+      <center class="justify-content-center d-flex">
+        <div class="">
           <paginate
               :page-count="pageCount"
               :page-range="3"

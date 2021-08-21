@@ -11,32 +11,30 @@
         </div>
       </div>
     </div>
+    <div class="d-flex flex-row">
+      <div>
+        <a href="#" @click="$router.go(-1)">Trở về</a><br />
+      </div>
+    </div>
     <div class="row justify-content-center round">
       <div class="col-lg-10 col-md-12">
         <div class="card shadow-lg card-1">
           <div class="card-body inner-card">
             <div class="row justify-content-center">
-              <div class="col-lg-12 col-md-6 col-sm-12">
-                <div class="d-flex flex-row">
-                  <div>
-                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a><br />
-                  </div>
-                </div>
-              </div>
               <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="p-3 py-5">
                   <div class="row mt-3">
                     <div class="col-md-12">
-                    <img :src="company.avatar" width="150px" />
-                    <label>            
-                      <input
-                        type="file"
-                        id="file"
-                        ref="file"
-                        v-on:change="handleFileUpload()"
-                        style="font-size: 15px"
-                      />
-                    </label>
+                      <img :src="company.avatar" width="150px" />
+                      <label>
+                        <input
+                          type="file"
+                          id="file"
+                          ref="file"
+                          v-on:change="handleFileUpload()"
+                          style="font-size: 15px"
+                        />
+                      </label>
                     </div>
                   </div>
                   <div class="row mt-3">
@@ -45,6 +43,18 @@
                         ><span style="color: red">*</span>Tên công ty</label
                       >
                       <input type="text" class="form-control" v-model="name" />
+                      <!-- Show company name error -->
+                      <div v-if="error_name.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_name"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-3">
@@ -57,6 +67,18 @@
                         class="form-control"
                         v-model="headquarters"
                       />
+                      <!-- Show company name error -->
+                      <div v-if="error_headquaters.length > 0">
+                        <ul>
+                          <li
+                            v-for="item in error_headquaters"
+                            v-bind:key="item"
+                            style="color: red"
+                          >
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
 
@@ -71,6 +93,18 @@
                         placeholder="https://"
                         v-model="website"
                       />
+                       <!-- Show webiste error -->
+                    <div v-if="error_website.length > 0">
+                      <ul>
+                        <li
+                          v-for="item in error_website"
+                          v-bind:key="item"
+                          style="color: red"
+                        >
+                          {{ item }}
+                        </li>
+                      </ul>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -80,7 +114,7 @@
                   <div class="row mt-3">
                     <div class="col-md-12">
                       <label class="labels"
-                        ><span style="color: red">*</span>Mô tả công ty</label
+                        >Mô tả công ty</label
                       >
                       <vue-editor
                         v-model="description"
@@ -110,6 +144,7 @@
 <script>
 import axios from "axios";
 import { VueEditor } from "vue2-editor";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -123,6 +158,10 @@ export default {
       isCreated: false,
       hasCompany: true,
       company: "",
+
+      error_name: [],
+      error_headquaters: [],
+      error_website: [],
     };
   },
 
@@ -162,15 +201,64 @@ export default {
             }
           );
       response
-        .catch((error) => {
-          console.log(error.response);
-          if (error.response.status == 400) {
-            this.error = true;
+        .then(() => {
+          if (this.isCreated) {
+            //this.$router.push("detail-cv?id=" + this.$route.query.id);
+          } else {
+            Swal.fire({
+              title: "Thành công",
+              text: "Tạo công ty thành công",
+              icon: "success",
+              timer: 1800,
+            });
+            this.$router.push("/recruiter-profile");
+            window.location.reload;
           }
         })
-        .then((res) => {
-          console.log(res);
-          this.$router.push("/recruiter-profile");
+        .catch((e) => {
+          console.log(e.response);
+          (this.error_name = []),
+            (this.error_headquaters = []),
+            (this.error_website = []),
+            console.log(e.response);
+          console.log(e.response.data.message);
+          if (
+            e.response.data.message == "Url website chưa đúng,VD:http://abc.com"
+          ) {
+            this.error_website.push(
+              "Địa chỉ website công ty chưa đúng, VD:https://sac.vn/"
+            );
+          }
+          if (e.response.status == 400) {
+            /* this.error = true; */
+            /*Check company name*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.name"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") == "The name field is required."
+            ) {
+              this.error_name.push("Tên công ty không để trống");
+            }
+            /*Check head quaters*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.headquaters"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") ==
+              "The headquaters field is required."
+            ) {
+              this.error_headquaters.push("Địa chỉ công ty không để trống");
+            }
+            /*Check websites*/
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.headquaters"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") ==
+              "The headquaters field is required."
+            ) {
+              this.error_headquaters.push("Địa chỉ công ty không để trống");
+            }
+            //check website url
+          }
         });
     },
     handleFileUpload() {

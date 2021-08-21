@@ -9,7 +9,8 @@
         </div>
       <div class="content">
         <h3 class="job-name">
-           <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>
+           <!-- <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>      -->
+          <a :href="$router.resolve({name: 'jobDetail', query:{id:job.id}}).href">{{job.name}}</a>
         </h3>
         <div class="tags">
           <i class="lni-map-marker" v-if="job.location == 1"> Quận 1 </i> 

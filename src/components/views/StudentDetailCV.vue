@@ -11,18 +11,15 @@
         </div>
       </div>
     </div>
+    <div>
+      <a href="#" @click="$router.go(-1)">Trở về</a>
+    </div>
     <div class="row justify-content-center round">
       <div class="col-lg-10 col-md-12">
         <div class="card shadow-lg card-1">
           <div class="card-body inner-card">
             <div class="row justify-content-center">
               <div class="col-lg-12 col-md-6 col-sm-12">
-                <div class="d-flex flex-row">
-                  <div>
-                    <a href="#" @click="$router.go(-1)">Trở về cá nhân</a
-                    ><br />
-                  </div>
-                </div>
                 <div class="d-flex flex-row">
                   <div>
                     <router-link
@@ -32,39 +29,62 @@
                       Cập nhật thông tin CV</router-link
                     >
                   </div>
-                </div>
-                <div class="d-flex flex-row">
-                  <div></div>
+                  <div>
+                    <button
+                      v-if="(studentCv.isPublic = true)"
+                      @click="hideCV"
+                      class="btn btn-common"
+                    >
+                      Ẩn CV
+                    </button>
+                    <button v-else @click="showCV" class="btn btn-common">
+                      Công khai CV
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class="col-lg-2 col-md-6 col-sm-12">
-                <img class="rounded-circle" v-if="studentCv.avatar ==''" v-bind:src="studentProfile.avatar" width="150" height="150" style="margin: 30px 10px 10px 10px"/>
-                <img class="rounded-circle" v-else v-bind:src="studentCv.avatar" width="150" height="150" style="margin: 30px 10px 10px 10px"/>
+                <img
+                  class="rounded-circle"
+                  v-if="studentCv.avatar == ''"
+                  v-bind:src="studentProfile.avatar"
+                  width="150"
+                  height="150"
+                  style="margin: 30px 10px 10px 10px"
+                />
+                <img
+                  class="rounded-circle"
+                  v-else
+                  v-bind:src="studentCv.avatar"
+                  width="150"
+                  height="150"
+                  style="margin: 30px 10px 10px 10px"
+                />
               </div>
               <div class="col-lg-5 col-md-6 col-sm-12">
                 <div class="row mt-2">
                   <div class="col-md-12">
-                    <label class="labels">-Tên CV: {{ studentCv.cvName }}</label>
+                    <label class="labels">Tên CV: {{ studentCv.cvName }}</label>
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">-Họ & tên: {{ studentCv.name }}</label>
+                    <label class="labels">Họ & tên: {{ studentCv.name }}</label>
                   </div>
                   <div class="col-md-12">
                     <label class="labels"
-                      >-Giới tính: {{ studentCv.sex ? "Nam" : "Nữ" }}</label
+                      >Giới tính: {{ studentCv.sex ? "Nam" : "Nữ" }}</label
                     >
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">-Ngày sinh: {{ studentCv.dob }}</label>
+                    <label class="labels">Ngày sinh: {{ studentCv.dob }}</label>
                   </div>
                   <div class="col-md-12">
                     <label class="labels"
-                      >-Số điện thoại: {{ studentCv.phone }}</label
+                      >Số điện thoại: {{ studentCv.phone }}</label
                     >
                   </div>
                   <div class="col-md-12">
                     <label class="labels"
-                      >-Trường học: {{ studentCv.school }}</label
+                      >Trường học: {{ studentCv.school }}</label
                     >
                   </div>
                 </div>
@@ -72,36 +92,35 @@
               <div class="col-lg-5 col-md-6 col-sm-12">
                 <div class="col-md-12">
                   <label class="labels"
-                    >-Kỹ năng: <span v-html="studentCv.skill"></span
+                    >Kỹ năng: <span v-html="studentCv.skill"></span
                   ></label>
                 </div>
                 <div class="col-md-12">
                   <label class="labels"
-                    >-Kinh nghiệm: <span v-html="studentCv.experience"></span
+                    >Kinh nghiệm: <span v-html="studentCv.experience"></span
                   ></label>
                 </div>
                 <div class="col-md-12">
                   <label class="labels"
-                    >-Ngoại ngữ: <span v-html="studentCv.foreignLanguage"></span
-                  ></label
-                  >
+                    >Ngoại ngữ: <span v-html="studentCv.foreignLanguage"></span
+                  ></label>
                 </div>
                 <div class="col-md-12">
                   <label class="labels"
-                    >-Mức lương mong muốn:
+                    >Mức lương mong muốn:
                     {{ formatPrice(studentCv.desiredSalaryMinimum) }} VNĐ</label
                   >
                 </div>
               </div>
               <div class="col-lg-12 col-md-6 col-sm-12">
                 <center>
-              <button
-                class="btn btn-common"
-                href=""
-                @click.prevent="modalConfirm"
-              >
-                Xoá CV
-              </button>
+                  <button
+                    class="btn btn-common"
+                    href=""
+                    @click.prevent="modalConfirm"
+                  >
+                    Xoá CV
+                  </button>
                 </center>
               </div>
             </div>
@@ -185,10 +204,57 @@ export default {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
-    
+    hideCV() {
+      this.id = this.$route.query.id;
+      if (localStorage.getItem("studentProfile")) {
+        this.studentProfile = JSON.parse(
+          localStorage.getItem("studentProfile")
+        );
+      }
+      if (localStorage.getItem("token")) {
+        this.token = localStorage.getItem("token");
+      }
+      axios
+        .put(
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/unpublic/" +
+            this.$route.query.id,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        )
+        .then(() => {
+          window.location.reload();
+        });
+    },
+    showCV() {
+      this.id = this.$route.query.id;
+      if (localStorage.getItem("studentProfile")) {
+        this.studentProfile = JSON.parse(
+          localStorage.getItem("studentProfile")
+        );
+      }
+      if (localStorage.getItem("token")) {
+        this.token = localStorage.getItem("token");
+      }
+      axios
+        .put(
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/public/" +
+            this.$route.query.id,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        )
+        .then(() => {
+          window.location.reload();
+        });
+    },
   },
 
-  mounted() {
+  async mounted() {
     this.id = this.$route.query.id;
     if (localStorage.getItem("studentProfile")) {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
@@ -196,7 +262,7 @@ export default {
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
-    axios
+    await axios
       .get(
         "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" +
           this.$route.query.id,
@@ -210,7 +276,7 @@ export default {
         this.studentCv = response.data.data;
         console.log(this.studentCv);
       });
-    axios
+    await axios
       .get(
         "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/applied-jobs",
         {

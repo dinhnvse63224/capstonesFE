@@ -12,20 +12,14 @@
       </div>
     </div>
     <!-- Page Header Start -->
-
+    <div class="d-flex flex-row">
+      <div><a href="#" @click="$router.go(-1)">Trở về </a><br /></div>
+    </div>
     <div class="row justify-content-center round">
       <div class="col-lg-10 col-md-12">
         <div class="card shadow-lg card-1">
           <div class="card-body inner-card">
             <div class="row justify-content-center">
-              <div class="col-lg-12 col-md-6 col-sm-12">
-                <div class="d-flex flex-row">
-                  <div>
-                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a
-                    ><br />
-                  </div>
-                </div>
-              </div>
               <div class="col-lg-5 col-md-6 col-sm-12">
                 <div class="form-group">
                   <label for="first-name">Tên việc làm*</label
@@ -58,10 +52,11 @@
                   v-model="multiCategory"
                   :options="list"
                   :multiple="true"
-                  :close-on-select="true"
+                  :close-on-select="false"
+                  :preserve-search="true"
                   placeholder=""
                   label="value"
-                  track-by="code"
+                  track-by="id"
                   class="form-control w-auto"
                 >
                 </multiselect>
@@ -140,18 +135,17 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label class="labels" for="days">Số ngày tồn tại*</label
+                  <label class="labels" for="days">Số ngày hiệu lực*</label
                   ><br />
-                  <select
-                    v-model="activeDays"
-                    name="days"
-                    id="sex"
-                    class="form-control"
-                  >
-                    <option :value="5">5 ngày - 100.000 VNĐ</option>
-                    <option :value="10">10 ngày - 200.000 VNĐ</option>
-                    <option :value="20">15 ngày - 300.000 VNĐ</option>
-                    <option :value="30">30 ngày - 500.000 VNĐ</option>
+                  <select v-model="activeDays" name="days" class="form-control">
+                    <option
+                      v-for="(activeDay, index) in listDayPrice"
+                      v-bind:key="index"
+                      :value="activeDay.id"
+                    >
+                      {{ activeDay.activeDays }} Ngày -
+                      {{ formatPrice(activeDay.price) }} VNĐ
+                    </option>
                   </select>
                 </div>
               </div>
@@ -298,7 +292,9 @@ export default {
       salaryMax: "",
       categories: [],
       activeDays: "",
+      activeDay: "",
       multiCategory: [],
+      listDayPrice: [],
       options: [
         { name: "Vue.js", language: "JavaScript" },
         { name: "Rails", language: "Ruby" },
@@ -332,43 +328,43 @@ export default {
         this.categories.push(cate.code);
       });
       let data = {};
-      if(this.isCreated) {
+      if (this.isCreated) {
         data = {
-            id: Number(this.$route.query.id),
-        name: this.name,
-        workingForm: this.workingForm,
-        salaryMin: this.salaryMin,
-        location: this.location,
-        workingPlace: this.workingPlace,
-        requirement: this.requirement,
-        type: true,
-        offer: this.offer,
-        sex: this.sex,
-        quantity: this.quantity,
-        description: this.description,
-        salaryMax: this.salaryMax,
-        categories: this.categories,
-        activeDays: this.activeDays,
+          id: Number(this.$route.query.id),
+          name: this.name,
+          workingForm: this.workingForm,
+          salaryMin: this.salaryMin,
+          location: this.location,
+          workingPlace: this.workingPlace,
+          requirement: this.requirement,
+          type: true,
+          offer: this.offer,
+          sex: this.sex,
+          quantity: this.quantity,
+          description: this.description,
+          salaryMax: this.salaryMax,
+          categories: this.categories,
+          activeDays: this.activeDays,
         };
       } else {
         data = {
           name: this.name,
-        workingForm: this.workingForm,
-        salaryMin: this.salaryMin,
-        location: this.location,
-        workingPlace: this.workingPlace,
-        requirement: this.requirement,
-        type: true,
-        offer: this.offer,
-        sex: this.sex,
-        quantity: this.quantity,
-        description: this.description,
-        salaryMax: this.salaryMax,
-        categories: this.categories,
-        activeDays: this.activeDays,
+          workingForm: this.workingForm,
+          salaryMin: this.salaryMin,
+          location: this.location,
+          workingPlace: this.workingPlace,
+          requirement: this.requirement,
+          type: true,
+          offer: this.offer,
+          sex: this.sex,
+          quantity: this.quantity,
+          description: this.description,
+          salaryMax: this.salaryMax,
+          categories: this.categories,
+          activeDays: this.activeDays,
         };
       }
-     console.log(data);
+      console.log(data);
       const response = this.isCreated
         ? axios.put(
             `http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/update`,
@@ -400,20 +396,32 @@ export default {
           }
         });
     },
+    formatPrice(value) {
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
   },
-  mounted() {
+  async mounted() {
     if (localStorage.getItem("recruiterProfile")) {
       this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
     }
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
-    axios
+    await axios
       .get(
         "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories"
       )
       .then((response) => {
         this.list = response.data.data;
+      });
+    await axios
+      .get(
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/active-days-price"
+      )
+      .then((response) => {
+        this.listDayPrice = response.data.data;
+        console.log(this.listDayPrice);
       });
   },
   created() {
