@@ -31,7 +31,7 @@
                   </div>
                   <div>
                     <button
-                      v-if="(studentCv.isPublic = true)"
+                      v-if="(studentCv.isPublic == true)"
                       @click="hideCV"
                       class="btn btn-common"
                     >
@@ -47,7 +47,7 @@
                 <img
                   class="rounded-circle"
                   v-if="studentCv.avatar == ''"
-                  v-bind:src="studentProfile.avatar"
+                  src="/assets/img/logo.png"
                   width="150"
                   height="150"
                   style="margin: 30px 10px 10px 10px"
@@ -206,11 +206,6 @@ export default {
     },
     hideCV() {
       this.id = this.$route.query.id;
-      if (localStorage.getItem("studentProfile")) {
-        this.studentProfile = JSON.parse(
-          localStorage.getItem("studentProfile")
-        );
-      }
       if (localStorage.getItem("token")) {
         this.token = localStorage.getItem("token");
       }
@@ -230,11 +225,6 @@ export default {
     },
     showCV() {
       this.id = this.$route.query.id;
-      if (localStorage.getItem("studentProfile")) {
-        this.studentProfile = JSON.parse(
-          localStorage.getItem("studentProfile")
-        );
-      }
       if (localStorage.getItem("token")) {
         this.token = localStorage.getItem("token");
       }

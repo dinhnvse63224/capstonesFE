@@ -100,7 +100,7 @@
                       <br />
                     </center>
                     <div>
-                      <router-link class="btn btn-common" to="/create-cv">
+                      <router-link class="btn btn-common" to="/update-cv">
                         Thêm mới CV</router-link
                       >
                     </div>
@@ -428,6 +428,7 @@ export default {
       )
       .then((response) => {
         this.studentCv = response.data.data;
+        console.log(this.studentCv);
       });
 
     axios

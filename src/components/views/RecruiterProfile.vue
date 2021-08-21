@@ -483,7 +483,7 @@
                   </tbody>
                   <!-- pagination -->
                   <center>
-                    <div class="pagination_rounded">
+                    <div class="justify-content-center d-flex">
                       <paginate
                         :page-count="pageCount"
                         :page-range="3"
@@ -661,9 +661,6 @@ export default {
         )
         .then((response) => {
           (this.listCV = response.data.data), console.log(this.listCV);
-        })
-        .catch((e) => {
-          console.log(e.response);
         });
     },
     searchCV() {
@@ -673,7 +670,7 @@ export default {
       };
       axios
         .post(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs?page=1",
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs",
           data,
           {
             headers: {
@@ -682,13 +679,9 @@ export default {
           }
         )
         .then((response) => {
-          this.allCV = response.data.data === null ? [] : response.data.data;
-          console.log(this.allCV);
-          this.pageCount = Math.ceil(this.allJob.length / 2);
-          this.listCV = this.paginate(this.allJob, 2, 1);
-        })
-        .catch((e) => {
-          console.log(e.response);
+          this.cv = response.data.data === null ? [] : response.data.data;
+          this.pageCount = Math.ceil(this.cv.length / 5);
+          this.allCV = this.paginate(this.cv, 5, 1);
         });
     },
     paginate(array, page_size, page_number) {
@@ -720,6 +713,7 @@ export default {
       .then((response) => {
         if (response.data.data !== null) {
           this.list = response.data.data;
+          console.log(this.list);
         }
       });
     await axios
@@ -750,25 +744,6 @@ export default {
       )
       .then((response) => {
         this.listJobDenied = response.data.data;
-      });
-    let data = {
-      workingForm: this.workingForm,
-      salary: this.salary,
-    };
-    await axios
-      .post(
-        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs/total-pages",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        }
-      )
-      .then((response) => {
-        this.allCV = response.data.data;
-        this.pageCount = Math.ceil(this.allJob.length / 2);
-        this.listCV = this.paginate(this.allJob, 2, 1);
       });
   },
   components: {

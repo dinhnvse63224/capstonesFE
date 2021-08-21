@@ -25,7 +25,7 @@
                     <div class="col-md-12">
                       <img
                         v-if="avatar == ''"
-                        :src="studentProfile.avatar"
+                        src="/assets/img/logo.png"
                         width="150px"
                       />
                       <img else :src="avatar" width="150px" />

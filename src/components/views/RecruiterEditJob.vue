@@ -141,7 +141,7 @@
                     <option
                       v-for="(activeDay, index) in listDayPrice"
                       v-bind:key="index"
-                      :value="activeDay.id"
+                      :value="activeDay.activeDays"
                     >
                       {{ activeDay.activeDays }} Ngày -
                       {{ formatPrice(activeDay.price) }} VNĐ

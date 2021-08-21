@@ -137,7 +137,6 @@ export default {
           this.$route.query.id
       )
       .then((response) => {
-        console.log(this.$route.query.id);
         this.job = response.data.data;
       });
   },

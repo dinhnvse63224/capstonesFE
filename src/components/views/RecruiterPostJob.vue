@@ -249,7 +249,7 @@
                     <option
                       v-for="(activeDay, index) in listDayPrice"
                       v-bind:key="index"
-                      :value="activeDay.id"
+                      :value="activeDay.activeDays"
                     >
                       {{ activeDay.activeDays }} Ngày -
                       {{ formatPrice(activeDay.price) }} VNĐ
@@ -491,8 +491,10 @@ export default {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.token}`,
       };
+     this.categories = [];
       this.multiCategory.forEach((cate) => {
-        this.categories.push(cate.code);
+        (this.multiCategory = []), this.categories.push(cate.id);
+        console.log(this.categories.push(cate.id));
       });
       const data = {
         name: this.name,
@@ -546,6 +548,19 @@ export default {
           const { status } = e.response;
           if (status == 400) {
             console.log(e.response.data);
+            if (
+              JSON.stringify(
+                e.response.data.modelState["dto.salaryMin"][0].toString()
+              ).replace(/^"(.*)"$/, "$1") == "salaryMin không thể >= salaryMax"
+            ) {
+              Swal.fire({
+                title: "Thất bại",
+                text: "Mức lương tối thiểu không bằng hoặc lớn hơn mức lương tối đa",
+                icon: "error",
+                confirmButtonText: "Xác nhận",
+              });
+            }
+
             /*Check category*/
             if (
               JSON.stringify(
