@@ -21,7 +21,7 @@
               <div class="col-lg-12 col-md-6 col-sm-12">
                 <div class="d-flex flex-row">
                   <div>
-                    <a href="#" @click="$router.go(-1)">Trở về trang cá nhân</a><br />
+                    <a href="#" @click="comeback">Trở về trang cá nhân</a><br />
                   </div>
                 </div>
               </div>
@@ -290,7 +290,7 @@ export default {
   mounted() {
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.list = response.data.data;
-
+      console.log(this.list);
     });
   },
   computed: {
@@ -330,11 +330,16 @@ export default {
         .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/create", data, {
           headers: header,
         })
-        .then(
+        .then((response) => {
+          console.log(response)
           this.$router.push('/recruiter-profile'),
           window.location.reload()
-        );
+        });
     },
+    comeback() {
+      this.$router.push('/recruiter-profile');
+      window.location.reload();
+    }
   },
 };
 </script>

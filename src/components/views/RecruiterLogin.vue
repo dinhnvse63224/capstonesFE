@@ -53,7 +53,12 @@
                     >Duy trì đăng nhập</label
                   >
                 </div>
-                <div class="mt-5 text-center">
+                <div class="mt-1 text-center">
+                  <router-link to="/forgot-password"
+                    >Quên mật khẩu?</router-link
+                  >
+                </div>
+                <div class="mt-1 text-center">
                   <button
                     @click="recruiterLogin"
                     class="btn btn-common log-btn"

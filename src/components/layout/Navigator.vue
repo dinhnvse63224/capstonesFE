@@ -72,7 +72,7 @@
               <li v-else-if="profile != ''" class="nav-item mx-1">
                 <div class="dropdown">
                   <div class="dropbtn">
-                    {{ profile.lastName }}
+                    {{ profile.username }}
                   </div>
                   <div class="dropdown-content">
                     <router-link to="/recruiter-profile">Hồ sơ</router-link>

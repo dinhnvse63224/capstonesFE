@@ -15,6 +15,8 @@ import JobDetail from '../components/views/JobDetail.vue'
 import RecruiterRegister from '../components/views/RecruiterRegister.vue'
 import RecruiterProfile from '../components/views/RecruiterProfile.vue'
 import RecruiterLogin from '../components/views/RecruiterLogin.vue'
+import ForgotPassword from '../components/views/ForgotPassword.vue'
+import ResetPassword from '../components/views/ResetPassword.vue'
 import RecruiterPostJob from '../components/views/RecruiterPostJob.vue'
 import RecruiterJobDetail from '../components/views/RecruiterJobDetail.vue'
 import RecruiterEditJob from '../components/views/RecruiterEditJob.vue'
@@ -68,6 +70,14 @@ const router = new VueRouter({
     {
       path: '/recruiter-login',
       component: RecruiterLogin
+    },
+    {
+      path: '/forgot-password',
+      component: ForgotPassword
+    },
+    {
+      path: '/reset-password',
+      component: ResetPassword
     },
     {
       path: '/recruiter-post-job',

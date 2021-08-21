@@ -91,20 +91,37 @@
         </div>
         <div class="col-md-8">
           <div class="container">
-            <div class="row">
-              <div class="col-lg-6 col-md-12 col-xs-12">
+            <div class="col">
+              <div class="container">
                 <div>
                   <h2>Việc làm full time</h2>
                 </div>
-                <div class="container">
+                <div class="col">
                   <ListFullTimeJob v-bind:listJob="listJob" />
                 </div>
+                      <!-- pagination -->
+     
               </div>
-              <div class="col-lg-6 col-md-12 col-xs-12">
+               <center>
+        <div class="pagination_rounded">
+          <paginate
+              :page-count="pageCount"
+              :page-range="3"
+              :margin-pages="2"
+              :click-handler="clickCallback"
+              :prev-text="' Trước '"
+              :next-text="' Sau '"
+              :container-class="'pagination'"
+              :active-class="'active'"
+              :page-class="'page-item'">
+          </paginate>
+        </div>
+      </center>
+              <div class="container">
                 <div>
                   <h2>Việc làm part time</h2>
                 </div>
-                <div class="container">
+                <div class="col">
                   <ListPartTimeJob v-bind:listJob="listJob" />
                 </div>
               </div>
@@ -125,15 +142,18 @@
 import ListPartTimeJob from "../Job/ListPartTimeJob.vue"
 import ListFullTimeJob from "../Job/ListFullTimeJob.vue"
 import axios from 'axios'
+import Paginate from 'vuejs-paginate'
 export default {
   components: {
     ListPartTimeJob,
     ListFullTimeJob,
+    Paginate
   },
   data() {
     return {
       listJob: [],
-      listBanner: []
+      listBanner: [],
+       pageCount : 0,
     }    
   },
   mounted () {
@@ -142,15 +162,115 @@ export default {
     // { headers: {"Authorization" : `Bearer ${tokenStr}`} }
     ).then(response => {
       (this.listJob = response.data.data)
+      
  });
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/banners")
     .then((response) => {
       this.listBanner = response.data.data;
       console.log(this.listBanner);
+      this.pageCount = Math.ceil(this.allJob.length / 5);
+      this.list = this.paginate(this.allJob, 5, 1);
+    }).catch((e) => {
+      console.log(e.response);
     });
-  }
+    axios.post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/part-time?page=1").then((response) => {
+      this.listJob = response.data.data;
+      this.pageCount = Math.ceil(this.listJob.length / 5);
+      this.list = this.paginate(this.listJob, 5, 1);
+      console.log(this.list);
+    }).catch((e) => {
+          console.log(e.response);
+        });
+  },
+  paginate(array, page_size, page_number) {
+      return array.slice((page_number - 1) * page_size, page_number * page_size);
+    },
+    clickCallback(number) {
+      this.list = this.paginate(this.allJob, 8, number);
+    },
 };
 </script>
 
 <style>
+/* pagination */
+
+.pagination_rounded,
+.pagination_square {
+  margin-top: 50px;
+  display: inline-block;
+  text-align: center;
+}
+
+.pagination_rounded ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pagination_rounded li:first-child {
+  margin-left: 0px;
+}
+
+.pagination_rounded ul li {
+  float: left;
+  margin-left: 20px;
+}
+
+.pagination_rounded ul li a:hover {
+  background: #00bcd4;
+  color: #fff;
+  border: 1px solid #00bcd4;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+.pagination_rounded .prev {
+  margin-left: 0px;
+  border-radius: 35px;
+  width: 80px;
+  height: 34px;
+  line-height: 34px;
+}
+
+.pagination_rounded ul li a {
+  float: left;
+  color: #00bcd4;
+  border-radius: 50%;
+  line-height: 30px;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  margin-bottom: 40px;
+  border: 1px solid black;
+}
+
+.pagination_rounded .prev i {
+  margin-right: 10px;
+}
+
+.pagination_rounded .next {
+  border-radius: 35px;
+  width: 80px;
+  height: 34px;
+  line-height: 34px;
+}
+
+.visible-xs {
+  display: none !important;
+}
+
+/* banner ads slider */
+body {
+  background-color: #eee;
+}
+
+.container-fluid {
+  margin-top: 30px;
+}
+
+.carousel-item img {
+  height: 400px;
+}
 </style>

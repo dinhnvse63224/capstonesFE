@@ -15,15 +15,9 @@
       <div class="d-flex flex-md-row justify-content-around align-items-center">
         <div class="d-flex flex-md-row align-items-center">
           <div class="p-md-2">
-            <img
-              src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-              alt=""
-              class="rounded-circle"
-              id="profile"
-            />
           </div>
           <div class="p-md-2 p-1" id="info">
-            <h5>{{ profile.username }}</h5>
+            <h5>{{ profile.gmail }}</h5>
           </div>
         </div>
         <div class="d-flex flex-row">
@@ -691,8 +685,8 @@ export default {
         .then((response) => {
           this.allCV = response.data.data === null ? [] : response.data.data;
           console.log(this.allCV);
-          this.pageCount = Math.ceil(this.allJob.length / 5);
-          this.listCV = this.paginate(this.allJob, 5, 1);
+          this.pageCount = Math.ceil(this.allJob.length / 2);
+          this.listCV = this.paginate(this.allJob, 2, 1);
         })
         .catch((e) => {
           console.log(e.response);
@@ -705,17 +699,17 @@ export default {
       );
     },
     clickCallback(number) {
-      this.list = this.paginate(this.allJob, 10, number);
+      this.list = this.paginate(this.allJob, 2, number);
     },
   },
-  mounted() {
+  async mounted() {
     if (localStorage.getItem("recruiterProfile")) {
       this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
     }
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
-    axios
+    await axios
       .get(
         "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/posted-jobs",
         {
@@ -729,7 +723,7 @@ export default {
           this.list = response.data.data;
         }
       });
-    axios
+    await axios
       .get(
         "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/company/self",
         {
@@ -746,7 +740,7 @@ export default {
           this.hasCompany = false;
         }
       });
-    axios
+    await axios
       .get(
         "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/denied-jobs",
         {
@@ -762,7 +756,7 @@ export default {
         workingForm: this.workingForm,
         salary: this.salary,
       };
-      axios
+      await axios
         .post(
           "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs/total-pages",
           data,
@@ -774,11 +768,8 @@ export default {
         )
         .then((response) => {
           this.allCV = response.data.data;
-          this.pageCount = Math.ceil(this.allJob.length / 5);
-          this.listCV = this.paginate(this.allJob, 5, 1);
-        })
-        .catch((e) => {
-          console.log(e.response);
+          this.pageCount = Math.ceil(this.allJob.length / 2);
+          this.listCV = this.paginate(this.allJob, 2, 1);
         });
   },
   components: {
