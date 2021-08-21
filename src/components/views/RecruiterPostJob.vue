@@ -136,7 +136,6 @@
                   <select
                     v-model="activeDays"
                     name="days"
-                    id="sex"
                     class="form-control"
                   >
                     <option :value="5">5 ngày - 100.000 VNĐ</option>
@@ -300,7 +299,7 @@ export default {
     }
   },
   methods: {
-    async postJob() {
+    postJob() {
       if (localStorage.getItem("token")) {
         this.token = localStorage.getItem("token");
       }
@@ -327,9 +326,7 @@ export default {
         categories: this.categories,
         activeDays: this.activeDays,
       };
-      console.log(data);
-      await console.log(data);
-      await axios
+      axios
         .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/create", data, {
           headers: header,
         })

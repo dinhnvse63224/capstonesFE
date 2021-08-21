@@ -16,6 +16,7 @@ import RecruiterRegister from '../components/views/RecruiterRegister.vue'
 import RecruiterProfile from '../components/views/RecruiterProfile.vue'
 import RecruiterLogin from '../components/views/RecruiterLogin.vue'
 import RecruiterPostJob from '../components/views/RecruiterPostJob.vue'
+import RecruiterJobDetail from '../components/views/RecruiterJobDetail.vue'
 import RecruiterEditJob from '../components/views/RecruiterEditJob.vue'
 import CandidateList from  '../components/views/CandidateList.vue'
 import RecruiterCompanyCreate from "../components/views/RecruiterCompanyCreateOrEdit"
@@ -71,6 +72,10 @@ const router = new VueRouter({
     {
       path: '/recruiter-post-job',
       component: RecruiterPostJob,
+    },
+    {
+      path: '/recruiter-job-detail',
+      component: RecruiterJobDetail,
     },
     {
       path: '/recruiter-edit-job',

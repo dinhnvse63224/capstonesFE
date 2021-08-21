@@ -61,7 +61,8 @@
                 </div>
                 <div class="col-md-12">
                   <label class="labels"
-                    >Ngoại ngữ: {{ studentCv.foreignLanguage }}</label
+                    >Ngoại ngữ: <span v-html="studentCv.foreignLanguage"></span
+                  ></label
                   >
                 </div>
                 <div class="col-md-12">

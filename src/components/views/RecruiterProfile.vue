@@ -270,9 +270,6 @@
                               <thead>
                                 <tr class="align-self-center">
                                   <th style="text-align: left">
-                                    <label class="th-label">ID</label>
-                                  </th>
-                                  <th style="text-align: left">
                                     <label class="th-label"
                                       >Tên công việc</label
                                     >
@@ -297,9 +294,6 @@
                                   v-bind:job="job"
                                 >
                                   <td style="text-align: left">
-                                    <label class="td-label">{{ job.id }}</label>
-                                  </td>
-                                  <td style="text-align: left">
                                     <label class="td-label">{{
                                       job.name
                                     }}</label>
@@ -319,22 +313,10 @@
                                       <router-link
                                         class="btn btn-warning"
                                         :to="{
-                                          path: 'recruiter-edit-job',
-                                          query: { id: id },
-                                        }"
-                                        >Chỉnh sửa</router-link
+                                          path: 'recruiter-job-detail',
+                                          query: { id: job.id }}"
+                                        >Xem trước</router-link
                                       >
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div>
-                                      <button
-                                        class="btn btn-common"
-                                        href=""
-                                        @click.prevent="modalConfirm(job.id)"
-                                      >
-                                        Xóa
-                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -434,7 +416,9 @@
               <div class="col-lg-12 col-md-6 col-xs-12">
                 <div class="col-lg-3 col-md-6 col-xs-12">
                   <label class="styled-select">
-                    <select v-model="workingForm">
+                    <select
+                      v-model="workingForm"
+                    >
                       <option :value="null">Hình thức</option>
                       <option :value="1">Full time</option>
                       <option :value="2">Part time</option>
@@ -443,16 +427,21 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
                   <label class="styled-select">
-                    <select v-model="workingForm">
+                    <select v-model="salary">
                       <option :value="null">Mức lương tối đa</option>
-                      <option :value="1">Dưới 1.000.000 VNĐ</option>
-                      <option :value="2">Dưới 3.000.000 VNĐ</option>
-                      <option :value="2">Dưới 5.000.000 VNĐ</option>
-                      <option :value="2">Dưới 7.000.000 VNĐ</option>
-                      <option :value="2">Dưới 10.000.000 VNĐ</option>
+                      <option :value="1000000">Dưới 1.000.000 VNĐ</option>
+                      <option :value="3000000">Dưới 3.000.000 VNĐ</option>
+                      <option :value="5000000">Dưới 5.000.000 VNĐ</option>
+                      <option :value="7000000">Dưới 7.000.000 VNĐ</option>
+                      <option :value="10000000">Dưới 10.000.000 VNĐ</option>
                     </select>
                   </label>
                 </div>
+                <div class="col-lg-3 col-md-6 col-xs-12">
+                      <button @click="searchCV" class="button">
+                        <i class="lni-search"></i>
+                      </button>
+                    </div>
               </div>
               <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -473,15 +462,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr v-for="(cv, index) in allCV"
+                                  v-bind:key="index"
+                                  v-bind:cv="cv">
                       <td style="text-align: left">
-                        <label class="td-label"> </label>
+                        <label class="td-label"> {{cv.name}} </label>
                       </td>
                       <td>
-                        <label class="td-label"> </label>
+                        <label v-if="cv.sex = true" class="td-label"> Nam </label>
+                        <label v-else class="td-label"> Nữ </label>
                       </td>
                       <td>
-                        <label class="td-label"> </label>
+                        <label class="td-label"> {{cv.school}} </label>
                       </td>
                       <td>
                         <div>
@@ -496,6 +488,23 @@
                       </td>
                     </tr>
                   </tbody>
+                  <!-- pagination -->
+                  <center>
+                    <div class="pagination_rounded">
+                      <paginate
+                        :page-count="pageCount"
+                        :page-range="3"
+                        :margin-pages="2"
+                        :click-handler="clickCallback"
+                        :prev-text="' Trước '"
+                        :next-text="' Sau '"
+                        :container-class="'pagination'"
+                        :active-class="'active'"
+                        :page-class="'page-item'"
+                      >
+                      </paginate>
+                    </div>
+                  </center>
                 </table>
               </div>
             </div>
@@ -539,12 +548,13 @@
           <div class="modal-content">
             <div class="modal-content">
               <div class="modal-body">
+                Lý do việc làm bị xóa:
                 <ul
                   v-for="(job, index) in listJobDenied"
                   v-bind:key="index"
                   v-bind:job="job"
                 >
-                  <li>Lý do việc làm bị xóa: {{ job.denyMessage }}</li>
+                  <li> {{ job.denyMessage }}</li>
                 </ul>
                 <button class="btn btn-common" data-bs-dismiss="modal">
                   Đóng
@@ -560,6 +570,8 @@
 
 <script>
 import axios from "axios";
+import Paginate from "vuejs-paginate";
+
 export default {
   data() {
     return {
@@ -576,10 +588,19 @@ export default {
       id_job_created: "",
       id: [],
       listJobDenied: [],
+      allCV: [],
+      listCV: [],
       jobDenied: {
         type: Object,
         default: null,
       },
+      workingForm: "",
+      salary: "",
+      pageCount: 0,
+      cv: {
+        type: Object,
+        default: null,
+      }
     };
   },
   computed: {
@@ -645,14 +666,46 @@ export default {
             },
           }
         )
-        .then(() => {
-          // eslint-disable-next-line no-undef
-          $("#confirmDelete").modal("hide");
-          window.location.reload();
+        .then((response) => {
+          (this.listCV = response.data.data), console.log(this.listCV);
         })
         .catch((e) => {
           console.log(e.response);
         });
+    },
+    searchCV() {
+      let data = {
+        workingForm: this.workingForm,
+        salary: this.salary,
+      };
+      axios
+        .post(
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs?page=1",
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.allCV = response.data.data === null ? [] : response.data.data;
+          console.log(this.allCV);
+          this.pageCount = Math.ceil(this.allJob.length / 5);
+          this.listCV = this.paginate(this.allJob, 5, 1);
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
+    },
+    paginate(array, page_size, page_number) {
+      return array.slice(
+        (page_number - 1) * page_size,
+        page_number * page_size
+      );
+    },
+    clickCallback(number) {
+      this.list = this.paginate(this.allJob, 10, number);
     },
   },
   mounted() {
@@ -705,6 +758,31 @@ export default {
       .then((response) => {
         this.listJobDenied = response.data.data;
       });
+    let data = {
+        workingForm: this.workingForm,
+        salary: this.salary,
+      };
+      axios
+        .post(
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/search-cvs/total-pages",
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.allCV = response.data.data;
+          this.pageCount = Math.ceil(this.allJob.length / 5);
+          this.listCV = this.paginate(this.allJob, 5, 1);
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
+  },
+  components: {
+    Paginate,
   },
 };
 </script>

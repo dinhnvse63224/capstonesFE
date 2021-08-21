@@ -100,7 +100,9 @@
     <section id="latest-jobs" class="section bg-gray">
       <div class="row">
         <div class="col-md-2">
-          <img src="#" alt="" width="100%">
+          <a v-bind:href="listBanner[0].url" target="_blank">
+          <img :src="listBanner[0].imgUrl" alt="" width="100%" height="100%" style="padding: 5%"/>
+          </a>
         </div>
         <div class="col-md-8">
           <div class="container">
@@ -112,7 +114,9 @@
           </div>
         </div>
         <div class="col-md-2">
-          <img src="#" alt="" width="100%">
+          <a v-bind:href="listBanner[1].url" target="_blank">
+          <img :src="listBanner[1].imgUrl" alt="" width="100%" height="100%" style="padding: 5%"/>
+          </a>
         </div>
       </div>
 
@@ -158,6 +162,7 @@ export default {
         type: Object,
         default: null,
       },
+      listBanner: [],
     };
   },
   components: {
@@ -196,23 +201,20 @@ export default {
       this.list = this.paginate(this.allJob, 8, number);
     },
   },
-  // mounted () {
-  // const tokenStr = 'hyaI8lKvbHoKJx4nTPb8Z8O4eZ0COS5DJ_ExJBE9c476nh2vFhjyZ_P6XA3EwGevo_AvqscQZQ0CKdhfKDRUC2RcTmey_d_FqiTz8ALPO8nPu8z2qep1mx9JdCafyzOtx73L62k7syTOfoI0swc3RmCtGgPtcJnfiZXoHYjpHQNqlMM90wBohwC1-D3Uc5e5qo9t2VNT4yZoi1_t3xulNLdJJpK_T2ZwnUtqsSx_EdzaXIjKHb2BK8dW2QY-lULrJcTswJIYu5RqA2vCTD7V0bY07r05p2V57u9ACXMc798SbLfbeK5HiNUdfNEnZfZcPsC8-W-AaxD6EdeFc6kt9g'
-  // axios.get("https://localhost:44315/job",
-  // { headers: {"Authorization" : `Bearer ${tokenStr}`} }
-  //   ).then(response => {
-  //     (this.list = response.data.data);
-  //     console.log(response.data.data) })
-  // }
+
   mounted() {
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job").then((response) => {
       this.allJob = response.data.data;
       this.pageCount = Math.ceil(this.allJob.length / 8);
       this.list = this.paginate(this.allJob, 8, 1);
-      console.log(this.list);
     });
-    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories")
+    .then((response) => {
       this.listCategories = response.data.data;
+    });
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/banners")
+    .then((response) => {
+      this.listBanner = response.data.data;
     });
   },
 

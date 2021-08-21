@@ -1,9 +1,12 @@
 <template>
   <div v-if="job.workingForm == 1" class="col-lg-6 col-md-12 col-xs-12">
     <div class="fulltime">
-      <div class="img-wraper">
-        <img v-bind:src="job.imgUrl" height="150" width="150"/>
+      <div v-if="job.imgUrl != null && job.imgUrl != ''" class="img-wraper">
+        <img :src="job.imgUrl" width="130" height="130" />
       </div>
+      <div v-else class="img-wraper">
+        <img src="/assets/img/logo.png" width="130" height="130"/>
+        </div>
       <div class="content">
         <h3>
           <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>

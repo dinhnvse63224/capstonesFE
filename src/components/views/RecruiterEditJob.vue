@@ -387,7 +387,7 @@ export default {
       response
         .then(() => {
           if (this.isCreated) {
-            this.$router.push("detail-job?id=" + this.$route.query.id);
+            this.$router.push("job-detail?id=" + this.$route.query.id);
           } else {
             this.$router.push("/recruiter-profile");
             window.location.reload;

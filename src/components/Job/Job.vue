@@ -37,7 +37,8 @@
           <i class="lni-map-marker" v-if="job.location == 23"> Huyện Củ Chi </i> 
           <i class="lni-map-marker" v-if="job.location == 24"> Huyện Cần Giờ </i> 
         </div>
-        <div class="tags"> <i class="lni-calendar"> {{ job.createDate }} </i> </div><br>
+        <div class="tags">Ngày đăng: {{ job.createDate }}</div>
+        <div class="tags">Ngày hết hạn: {{ job.endDate }}</div>
         <span v-if="job.workingForm == 1" class="full-time">Full time</span>
         <span v-else-if="job.workingForm == 2" class="part-time">Part time</span>       
       </div>

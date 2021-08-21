@@ -5,10 +5,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-6 col-xs-12">
-            <div class="breadcrumb-wrapper">
-              <div class="img-wrapper">
-                <!-- <img :src="job.imgUrl" width="150" height="150"/> -->
-              </div>
+            <div class="breadcrumb-wrapper">           
               <div class="content">
                 <h3 class="job-title">{{ job.name }}</h3>
                 <p class="brand"></p>
@@ -17,7 +14,10 @@
                     ><i class="lni-map-marker"></i><label class="job-label"> {{ job.workingPlace }} </label></span
                   ><br>
                   <span
-                    ><i class="lni-calendar"></i> <label class="job-label">{{ job.createDate }}</label>
+                    ><i class="lni-calendar"></i> Ngày tạo: <label class="job-label">{{ job.createDate }}</label>
+                  </span><br>
+                  <span
+                    ><i class="lni-calendar"></i> Ngày hết hạn: <label class="job-label">{{ job.endDate }}</label>
                   </span>
                 </div>
               </div>
@@ -41,9 +41,6 @@
               <h5>QUYỀN LỢI ĐƯỢC HƯỞNG</h5>
               <span v-html="job.offer"></span>
               <br />
-<!--              <router-link href="#" class="btn btn-common"-->
-<!--                >Apply job</router-link-->
-<!--              >-->
             </div>
           </div>
           <div class="col-lg-5 col-md-12 col-xs-12">
@@ -230,7 +227,7 @@
         <div class="section-header">
           <h2 class="section-title">VIỆC LÀM TƯƠNG TỰ</h2>
         </div>
-        <ListJob v-bind:list="jobSuggest" />
+        <ListJob v-bind:list="jobSimilar" />
       </div>
     </section>
     <!-- Featured Section End -->
@@ -240,7 +237,7 @@
 <script>
 import axios from "axios";
 import ListJob from "../Job/ListJob";
-// import ListSuggestJob from "../Job/ListSuggestJob.vue";
+
 export default {
   data() {
     return {
@@ -253,7 +250,7 @@ export default {
       isShowInfo: false,
       token: "",
       listCV: [],
-      jobSuggest: []
+      jobSimilar: []
     };
   },
   components: {
@@ -299,6 +296,12 @@ export default {
             this.jobSuggest = response.data.data;
           }
         });
+    axios
+      .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/similar-jobs/" + this.$route.query.id)
+      .then((response) => {
+        this.jobSimilar = response.data.data;
+        console.log(this.jobSimilar);
+      });
   },
   methods: {
     // method ko nên dùng async
@@ -338,9 +341,6 @@ export default {
       } else {
         alert("Bạn cần đăng nhập để nộp đơn!");
       }
-    },
-    accept() {
-      // this.$router.push('student-profile');
     },
     saveJob() {
       if (this.token) {
